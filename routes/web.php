@@ -18,10 +18,14 @@ Route::get('/go', function () {
 });
 
 Auth::routes();
-
+//Auth Routed
+Route::post('loginUser', [App\Http\Controllers\AuthController::class, 'loginUser'])->name('loginUser');
+Route::get('profile', [App\Http\Controllers\AuthController::class, 'profile']);
+Route::get('update', [App\Http\Controllers\AuthController::class, 'updateUserinfo']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //support routes
 Route::get('support', [App\Http\Controllers\SupportController::class, 'index']);
+Route::get('addUser', [App\Http\Controllers\SupportController::class, 'addUser']);
 //backend routes
 Route::get('/', [App\Http\Controllers\AuthController::class, 'login']);
 Route::get('dashboard', [App\Http\Controllers\IndexController::class, 'index']);

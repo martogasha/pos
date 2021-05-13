@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Sale;
 use App\Models\Sold;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SoldController extends Controller
 {
@@ -24,6 +25,7 @@ class SoldController extends Controller
                     'total' => $getSale->total,
                     'profit' => $getSale->profit,
                     'date' => $request->date,
+                    'user_id'=> Auth::id(),
                     'payment_method' => $getSale->payment_method,
                     'image' => $getSale->image,
                 ]);
@@ -64,6 +66,7 @@ class SoldController extends Controller
                                 <td>' . $sold->total . '</td>
                                 <td style="color: green">' . $sold->profit . '</td>
                                 <td>' . $sold->payment_method . '</td>
+                                <td>' . $sold->user->first_name . ' ' . $sold->user->last_name . '</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"

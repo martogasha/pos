@@ -36,18 +36,20 @@
                                 <div class="col-lg-7 align-self-center">
                                     <div class="p-3">
                                         <h2 class="mb-2">Sign In</h2>
+                                        @include('flash-message')
                                         <p>Login to stay connected.</p>
-                                        <form>
+                                        <form action="{{route('loginUser')}}" method="post">
+                                            @csrf
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="floating-label form-group">
-                                                        <input class="floating-input form-control" type="email" placeholder=" ">
+                                                        <input class="floating-input form-control" name="email" type="email" placeholder=" ">
                                                         <label>Email</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-12">
                                                     <div class="floating-label form-group">
-                                                        <input class="floating-input form-control" type="password" placeholder=" ">
+                                                        <input class="floating-input form-control" name="password" type="password" placeholder=" ">
                                                         <label>Password</label>
                                                     </div>
                                                 </div>

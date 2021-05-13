@@ -26,8 +26,8 @@
 
     <div class="iq-sidebar  sidebar-default ">
         <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-            <a href="index.html" class="header-logo">
-                <img src="assets/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo"><h5 class="logo-title light-logo ml-3">POSDash</h5>
+            <a href="{{url('dashboard')}}" class="header-logo">
+                <img src="assets/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo"><h5 class="logo-title light-logo ml-3">Icons Computer Store</h5>
             </a>
             <div class="iq-menu-bt-sidebar ml-0">
                 <i class="las la-bars wrapper-menu"></i>
@@ -44,6 +44,7 @@
                             <span class="ml-4">Dashboards</span>
                         </a>
                     </li>
+                    @if(\Illuminate\Support\Facades\Auth::user()->role==0)
                     <li class=" ">
                         <a href="#product" class="collapsed" data-toggle="collapse" aria-expanded="false">
                             <svg class="svg-icon" id="p-dash2" width="20" height="20"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
@@ -62,6 +63,7 @@
                             </li>
                         </ul>
                     </li>
+                    @endif
                     <li class=" ">
                         <a href="#sale" class="collapsed" data-toggle="collapse" aria-expanded="false">
                             <svg class="svg-icon" id="p-dash4" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -103,6 +105,26 @@
                             </li>
                         </ul>
                     </li>
+                    @if(\Illuminate\Support\Facades\Auth::user()->role==0)
+                    <li class=" ">
+                        <a href="#admin" class="collapsed" data-toggle="collapse" aria-expanded="false">
+                            <svg class="svg-icon" id="p-dash4" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path>
+                            </svg>
+                            <span class="ml-4">Admin</span>
+                            <svg class="svg-icon iq-arrow-right arrow-active" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="10 15 15 20 20 15"></polyline><path d="M4 4h7a4 4 0 0 1 4 4v12"></path>
+                            </svg>
+                        </a>
+                        <ul id="admin" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
+                            <li class="">
+                                <a href="{{url('support')}}">
+                                    <i class="las la-minus"></i><span>Admin Dashboard</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endif
                 </ul>
             </nav>
             <div id="sidebar-bottom" class="position-relative sidebar-bottom">
@@ -123,9 +145,9 @@
             <nav class="navbar navbar-expand-lg navbar-light p-0">
                 <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
                     <i class="ri-menu-line wrapper-menu"></i>
-                    <a href="index.html" class="header-logo">
+                    <a href="{{url('dashboard')}}" class="header-logo">
                         <img src="assets/images/logo.png" class="img-fluid rounded-normal" alt="logo">
-                        <h5 class="logo-title ml-3">POSDash</h5>
+                        <h5 class="logo-title ml-3">Icons Computer Store</h5>
 
                     </a>
                 </div>
@@ -342,11 +364,14 @@
                                                      class="rounded profile-img img-fluid avatar-70">
                                             </div>
                                             <div class="p-3">
-                                                <h5 class="mb-1"><a href="http://iqonic.design/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0c46636d624879634c7c7e637c697e7875226f6361">[email&#160;protected]</a></h5>
+                                                <h5 class="mb-1">{{\Illuminate\Support\Facades\Auth::user()->first_name}} {{\Illuminate\Support\Facades\Auth::user()->last_name}}</a></h5>
                                                 <p class="mb-0">Since 10 march, 2020</p>
                                                 <div class="d-flex align-items-center justify-content-center mt-3">
-                                                    <a href="app/user-profile.html" class="btn border mr-2">Profile</a>
-                                                    <a href="auth-sign-in.html" class="btn border">Sign Out</a>
+                                                    <a href="{{url('profile')}}" class="btn border mr-2">Profile</a>
+                                                    <form action="{{route('logout')}}" method="post" id="logout">
+                                                        @csrf
+                                                    <a href="javascript:document.getElementById('logout').submit();" class="btn border">Sign Out</a>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

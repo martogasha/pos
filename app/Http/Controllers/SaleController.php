@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SaleController extends Controller
 {
@@ -39,6 +40,7 @@ class SaleController extends Controller
                 if ($getProduct->number_of_pack!=null) {
                     $numberOfPack = intdiv($getProduct->product_quantity, $getProduct->number_of_pack);
                 }
+                $updateUserId = Sale::where('barcode',$get->barcode)->update(['user_id'=>Auth::id()]);
                 $updatePrice = Sale::where('barcode',$get->barcode)->update(['price'=>$newPrice]);
                 $updateQuantity = Sale::where('barcode',$get->barcode)->update(['quantity'=>$newQuantity]);
                 $updateProductQuantity = Product::where('product_barcode',$get->barcode)->update(['product_quantity'=>$newProductQuantity]);

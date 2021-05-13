@@ -23,6 +23,7 @@ class CreateSoldsTable extends Migration
             $table->integer('profit');
             $table->date('date');
             $table->string('payment_method')->nullable();
+            $table->integer('user_id')->nullable();
             $table->mediumText('image')->nullable();
             $table->timestamps();
         });

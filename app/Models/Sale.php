@@ -16,6 +16,10 @@ class Sale extends Model
         'total',
         'profit',
         'image',
+        'user_id',
         'payment_method',
     ];
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

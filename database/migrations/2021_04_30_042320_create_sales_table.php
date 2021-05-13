@@ -22,6 +22,7 @@ class CreateSalesTable extends Migration
             $table->integer('total');
             $table->integer('profit');
             $table->string('payment_method')->nullable();
+            $table->integer('user_id')->nullable();
             $table->mediumText('image')->nullable();
             $table->timestamps();
         });

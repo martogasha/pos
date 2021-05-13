@@ -28,7 +28,8 @@
                                 <th>Quantity</th>
                                 <th>Sub Total</th>
                                 <th>Profit</th>
-                                <th>Payment <Method></Method></th>
+                                <th>Payment</th>
+                                <th>User</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -56,6 +57,7 @@
                                 <td>{{$sale->total}}</td>
                                 <td style="color: green">{{$sale->profit}}</td>
                                 <td>{{$sale->payment_method}}</td>
+                                <td>{{$sale->user->first_name}} {{$sale->user->last_name}}</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"

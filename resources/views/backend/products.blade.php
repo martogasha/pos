@@ -28,7 +28,9 @@
                                 <th>Selling Price</th>
                                 <th>Packs</th>
                                 <th>Quantity</th>
+                                @if(\Illuminate\Support\Facades\Auth::user()->role==0)
                                 <th>Action</th>
+                                @endif
                             </tr>
                             </thead>
                             <tbody class="ligth-body">
@@ -57,7 +59,7 @@
                                     <td>N/A</td>
                                 @endif
                                     <td>{{$product->product_quantity}}</td>
-
+                                @if(\Illuminate\Support\Facades\Auth::user()->role==0)
                                 <td>
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge bg-success mr-2 view" data-toggle="modal" data-target="#editProduct" id="{{$product->id}}" data-placement="top" title="" data-original-title="Edit"
@@ -66,6 +68,7 @@
                                            href="#"><i class="ri-delete-bin-line mr-0"></i></a>
                                     </div>
                                 </td>
+                                @endif
                             </tr>
                             @endforeach
                             </tbody>

@@ -10,7 +10,6 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <form action="http://iqonic.design/themes/posdash/html/backend/page-list-product.html" data-toggle="validator">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -33,6 +32,13 @@
                                             <div class="help-block with-errors"></div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Phone Number *</label>
+                                            <input type="text" class="form-control" id="phone" placeholder="Enter Phone Number" data-errors="Please Enter Phone Number." required>
+                                            <div class="help-block with-errors"></div>
+                                        </div>
+                                    </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>User Role *</label>
@@ -44,9 +50,8 @@
                                     </div>
 
                                 </div>
-                                <button type="submit" class="btn btn-primary mr-2">Add User</button>
+                                <button type="button" class="btn btn-primary mr-2" id="addUserButton">Add User</button>
                                 <button type="reset" class="btn btn-danger">Reset</button>
-                            </form>
                         </div>
                     </div>
                 </div>
@@ -63,17 +68,15 @@
                                     <label for="checkbox1" class="mb-0"></label>
                                 </div>
                             </th>
-                            <th>Date</th>
-                            <th>Customer</th>
-                            <th>Total</th>
-                            <th>Paid</th>
-                            <th>Status</th>
-                            <th>Biller</th>
-                            <th>Tax</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone Number</th>
+                            <th>Role</th>
                             <th>Action</th>
                         </tr>
                         </thead>
                         <tbody class="ligth-body">
+                        @foreach($users as $user)
                         <tr>
                             <td>
                                 <div class="checkbox d-inline-block">
@@ -81,13 +84,14 @@
                                     <label for="checkbox2" class="mb-0"></label>
                                 </div>
                             </td>
-                            <td>01 jan 2020</td>
-                            <td>Bill Yerds</td>
-                            <td>38.50</td>
-                            <td>38.50</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Yerds</td>
-                            <td>1.3</td>
+                            <td>{{$user->first_name}} {{$user->last_name}}</td>
+                            <td>{{$user->email}}</td>
+                            <td>{{$user->phone}}</td>
+                            @if($user->role==0)
+                            <td>admin</td>
+                            @else
+                                <td>User</td>
+                            @endif
                             <td>
                                 <div class="d-flex align-items-center list-action">
                                     <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
@@ -99,206 +103,8 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox3">
-                                    <label for="checkbox3" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>03 jan 2020</td>
-                            <td>Anna Sthesia</td>
-                            <td>40.50</td>
-                            <td>40.50</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Sthesia</td>
-                            <td>1.4</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                       href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                       href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                       href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox4">
-                                    <label for="checkbox4" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>05 jan 2020</td>
-                            <td>Paul Molive</td>
-                            <td>50.00</td>
-                            <td>50.00</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Molive</td>
-                            <td>1.5</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                       href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                       href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                       href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox5">
-                                    <label for="checkbox5" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>15 jan 2020</td>
-                            <td>Anna Mull</td>
-                            <td>85.50</td>
-                            <td>85.50</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Anna</td>
-                            <td>1.8</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                       href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                       href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                       href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox6">
-                                    <label for="checkbox6" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>24 jan 2020</td>
-                            <td>Paige Turner</td>
-                            <td>38.50</td>
-                            <td>38.50</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Turner</td>
-                            <td>1.9</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                       href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                       href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                       href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox7">
-                                    <label for="checkbox7" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>09 Feb 2020</td>
-                            <td>Bob Frapples</td>
-                            <td>48.50</td>
-                            <td>48.50</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Frapples</td>
-                            <td>1.4</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                       href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                       href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                       href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox8">
-                                    <label for="checkbox8" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>25 feb 2020</td>
-                            <td>Barb Ackue</td>
-                            <td>58.50</td>
-                            <td>55.50</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Ackue</td>
-                            <td>1.6</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                       href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                       href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                       href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox9">
-                                    <label for="checkbox9" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>28 feb 2020</td>
-                            <td>Greta Life</td>
-                            <td>60.45</td>
-                            <td>60.45</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Yerds</td>
-                            <td>1.8</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                       href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                       href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                       href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="checkbox d-inline-block">
-                                    <input type="checkbox" class="checkbox-input" id="checkbox10">
-                                    <label for="checkbox10" class="mb-0"></label>
-                                </div>
-                            </td>
-                            <td>05 Mar 2020</td>
-                            <td>Pete Sariya</td>
-                            <td>52.48</td>
-                            <td>52.48</td>
-                            <td><div class="badge badge-success">Paid</div></td>
-                            <td>Sariya</td>
-                            <td>1.2</td>
-                            <td>
-                                <div class="d-flex align-items-center list-action">
-                                    <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                       href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                       href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                       href="#"><i class="ri-delete-bin-line mr-0"></i></a>
-                                </div>
-                            </td>
-                        </tr>
+                        @endforeach
+
                         </tbody>
                     </table>
                 </div>
@@ -343,7 +149,27 @@
 <script src="assets/js/app.js"></script>
 </body>
 <script>
+    $('#addUserButton').click(function () {
+        var first_name = $('#first_name').val();
+        var last_name = $('#last_name').val();
+        var phone = $('#phone').val();
+        var email = $('#email').val();
+        var role = $('#role').val();
+        $.ajax({
+            type:"get",
+            url:"{{url('addUser')}}",
+            data:{'first_name':first_name,'last_name':last_name,'phone':phone,'email':email,'role':role},
+            success:function (data) {
+                location.reload();
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
 
+            }
+
+        });
+    });
 </script>
 <!-- Mirrored from iqonic.design/themes/posdash/html/backend/page-add-product.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 09 Mar 2021 21:36:26 GMT -->
 </html>

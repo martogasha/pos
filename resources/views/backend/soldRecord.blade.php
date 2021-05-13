@@ -35,7 +35,8 @@
                                 <th>Quantity</th>
                                 <th>Sub Total</th>
                                 <th>Profit</th>
-                                <th>Payment <Method></Method></th>
+                                <th>Payment</th>
+                                <th>User</th>
                                 <th>Action</th>
                             </tr>
                             </thead>

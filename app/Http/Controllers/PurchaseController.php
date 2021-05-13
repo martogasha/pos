@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Purchase;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseController extends Controller
 {
@@ -61,6 +62,7 @@ class PurchaseController extends Controller
                     'quantity' => $request->product_quantity,
                     'price' => $request->product_price,
                     'image' => $getProduct->product_image,
+                    'user_id'=> Auth::id(),
                     'total' => $request->product_quantity * $request->product_price,
                 ]);
             }
