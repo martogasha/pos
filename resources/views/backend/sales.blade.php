@@ -161,7 +161,7 @@
             url:"{{url('recordSale')}}",
             data:{'date':dateOfBirth},
             success:function (data) {
-                alert('ok')
+                location.reload();
             },
             error:function (error) {
                 console.log(error)
