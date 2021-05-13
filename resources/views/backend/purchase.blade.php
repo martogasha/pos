@@ -6,8 +6,14 @@
                     <div class="col-lg-12">
                         <div class="table-responsive rounded mb-3" style="height:250px">
                             <table class="data-table table mb-0 tbl-server-info">
-                                <h4>Items on Stock</h4>
-                                <br>
+                                <div class="col-lg-12">
+                                    <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                                        <div>
+                                            <h4 class="mb-3">Stock List</h4>
+                                        </div>
+                                        <a href="#" data-toggle="modal" data-target="#sellService" class="btn btn-primary add-list"><i class="las la-plus mr-3"></i>Sell Service</a>
+                                    </div>
+                                </div>
                                 <thead class="bg-white text-uppercase">
                                 <tr class="ligth ligth-data">
                                     <th>
@@ -143,7 +149,35 @@
             </div>
         </div>
     </div>
-
+    <!-- Modal -->
+    <div class="modal fade" id="sellService" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Services</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Service offered</label>
+                            <input type="text" class="form-control" id="serviceOffered" aria-describedby="emailHelp" placeholder="Enter Service Offered">
+                            </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Price</label>
+                            <input type="text" class="form-control" id="priceOfService" placeholder="Price">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="submitServiceButton" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 </div>
@@ -244,6 +278,43 @@
                     type:"get",
                     url:"{{url('total')}}",
                     data:{'product':$prodId},
+                    success:function (data) {
+                        $('#footerTotal').html(data);
+                        $("html, body").animate({
+                            scrollTop: $(
+                                'html, body').get(0).scrollHeight
+                        }, 2000);
+                    },
+                    error:function (error) {
+                        console.log(error)
+                        alert('error')
+
+                    }
+
+                });
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
+    $('#submitServiceButton').on('click',function () {
+        $service = $('#serviceOffered').val();
+        $priceOfService = $('#priceOfService').val();
+        $.ajax({
+            type:"get",
+            url:"{{url('purchaseTable')}}",
+            data:{'service':$service,'priceOfService':$priceOfService},
+            success:function (data) {
+                $('#tableContent').html(data);
+                $('#sell').modal('hide');
+                $.ajax({
+                    type:"get",
+                    url:"{{url('total')}}",
+                    data:{'service':$service},
                     success:function (data) {
                         $('#footerTotal').html(data);
                         $("html, body").animate({

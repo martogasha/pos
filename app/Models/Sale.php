@@ -16,6 +16,8 @@ class Sale extends Model
         'total',
         'profit',
         'image',
+        'total_for_services',
+        'profit_of_services',
         'user_id',
         'payment_method',
     ];

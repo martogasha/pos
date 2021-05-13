@@ -13,45 +13,70 @@ class SaleController extends Controller
     public function index(){
         $sales = Sale::all();
         $totalSale = Sale::sum('total');
+        $totalServiceSale = Sale::sum('total_for_services');
         $totalProfit = Sale::sum('profit');
+        $totalProfitForSale = Sale::sum('profit_of_services');
         return view('backend.sales',[
             'sales'=>$sales,
             'totalSale'=>$totalSale,
-            'totalProfit'=>$totalProfit
+            'totalServiceSale'=>$totalServiceSale,
+            'totalProfit'=>$totalProfit,
+            'totalProfitForSale'=>$totalProfitForSale,
         ]);
 
     }
     public function sold(Request $request){
         if ($request->ajax()) {
             $output = "";
-            $gets = Purchase::all();
-            foreach ($gets as $get){
-                $getSale = Sale::where('barcode',$get->barcode)->first();
-                $getProduct = Product::where('product_barcode',$get->barcode)->first();
-                $newQuantity = $getSale->quantity + $get->quantity;
-                $newPrice = $get->price;
-                $subTotal = $get->price * $get->quantity;
-                $newTotal = $getSale->total + $subTotal;
-                $calculateProfit = $get->price - $getProduct->buying_price;
-                $getProfit = $calculateProfit * $get->quantity;
-                $newProfit = $getSale->profit + $getProfit;
-                $productQuantity = $getProduct->product_quantity;
-                $newProductQuantity = $productQuantity - $get->quantity;
-                if ($getProduct->number_of_pack!=null) {
-                    $numberOfPack = intdiv($getProduct->product_quantity, $getProduct->number_of_pack);
-                }
-                $updateUserId = Sale::where('barcode',$get->barcode)->update(['user_id'=>Auth::id()]);
-                $updatePrice = Sale::where('barcode',$get->barcode)->update(['price'=>$newPrice]);
-                $updateQuantity = Sale::where('barcode',$get->barcode)->update(['quantity'=>$newQuantity]);
-                $updateProductQuantity = Product::where('product_barcode',$get->barcode)->update(['product_quantity'=>$newProductQuantity]);
-                if ($getProduct->number_of_pack!=null) {
-                    $updatePacks = Product::where('product_barcode', $get->barcode)->update(['number_of_pack' => $numberOfPack]);
-                }
-                $updateTotal = Sale::where('barcode',$get->barcode)->update(['total'=>$newTotal]);
-                $updateProfit = Sale::where('barcode',$get->barcode)->update(['profit'=>$newProfit]);
-                $updatePayment = Sale::where('barcode',$get->barcode)->update(['payment_method'=>$request->payment_method]);
-                $get->delete();
+            $tests = Purchase::all();
+            if ($request->product_id == null){
+                foreach ($tests as $test) {
+                    $createService = Sale::create([
+                        'barcode' => 0,
+                        'name' => $test->name,
+                        'price' => $test->price,
+                        'quantity' => 1,
+                        'total' => 0,
+                        'total_for_services' => $request->total,
+                        'profit_of_services' => $request->total*0.5,
+                        'profit' => 0,
+                        'payment_method' => $request->payment_method,
+                        'user_id' => Auth::id(),
 
+                    ]);
+                    $test->delete();
+                }
+            }
+            else {
+                $gets = Purchase::all();
+                foreach ($gets as $get) {
+                    $getSale = Sale::where('barcode', $get->barcode)->first();
+                    $getProduct = Product::where('product_barcode', $get->barcode)->first();
+                    $newQuantity = $getSale->quantity + $get->quantity;
+                    $newPrice = $get->price;
+                    $subTotal = $get->price * $get->quantity;
+                    $newTotal = $getSale->total + $subTotal;
+                    $calculateProfit = $get->price - $getProduct->buying_price;
+                    $getProfit = $calculateProfit * $get->quantity;
+                    $newProfit = $getSale->profit + $getProfit;
+                    $productQuantity = $getProduct->product_quantity;
+                    $newProductQuantity = $productQuantity - $get->quantity;
+                    if ($getProduct->number_of_pack != null) {
+                        $numberOfPack = intdiv($getProduct->product_quantity, $getProduct->number_of_pack);
+                    }
+                    $updateUserId = Sale::where('barcode', $get->barcode)->update(['user_id' => Auth::id()]);
+                    $updatePrice = Sale::where('barcode', $get->barcode)->update(['price' => $newPrice]);
+                    $updateQuantity = Sale::where('barcode', $get->barcode)->update(['quantity' => $newQuantity]);
+                    $updateProductQuantity = Product::where('product_barcode', $get->barcode)->update(['product_quantity' => $newProductQuantity]);
+                    if ($getProduct->number_of_pack != null) {
+                        $updatePacks = Product::where('product_barcode', $get->barcode)->update(['number_of_pack' => $numberOfPack]);
+                    }
+                    $updateTotal = Sale::where('barcode', $get->barcode)->update(['total' => $newTotal]);
+                    $updateProfit = Sale::where('barcode', $get->barcode)->update(['profit' => $newProfit]);
+                    $updatePayment = Sale::where('barcode', $get->barcode)->update(['payment_method' => $request->payment_method]);
+                    $get->delete();
+
+                }
             }
 
             $purchases = Purchase::all();

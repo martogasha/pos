@@ -46,25 +46,36 @@ class PurchaseController extends Controller
     public function purchaseTable(Request $request){
         if ($request->ajax()){
             $output ="";
-            $getProduct = Product::find($request->product);
-            $getQuantity = Purchase::where('barcode', $getProduct->product_barcode)->first();
-            if ($getQuantity){
-                $initialQuantity = $getQuantity->quantity;
-                $addOne = $initialQuantity + $request->product_quantity;
-                $total = $getQuantity->price * $addOne;
-                $updateQuantity = Purchase::where('id',$getQuantity->id)->update(['quantity'=>$addOne]);
-                $updateTotal = Purchase::where('id',$getQuantity->id)->update(['total'=>$total]);
+            if ($request->service){
+                $purchase = Purchase::create([
+                    'barcode' => 0,
+                    'name' => $request->service,
+                    'quantity' =>1,
+                    'price' => $request->priceOfService,
+                    'user_id' => Auth::id(),
+                    'total' => $request->priceOfService,
+                ]);
             }
             else {
-                $purchase = Purchase::create([
-                    'barcode' => $getProduct->product_barcode,
-                    'name' => $getProduct->product_name,
-                    'quantity' => $request->product_quantity,
-                    'price' => $request->product_price,
-                    'image' => $getProduct->product_image,
-                    'user_id'=> Auth::id(),
-                    'total' => $request->product_quantity * $request->product_price,
-                ]);
+                $getProduct = Product::find($request->product);
+                $getQuantity = Purchase::where('barcode', $getProduct->product_barcode)->first();
+                if ($getQuantity) {
+                    $initialQuantity = $getQuantity->quantity;
+                    $addOne = $initialQuantity + $request->product_quantity;
+                    $total = $getQuantity->price * $addOne;
+                    $updateQuantity = Purchase::where('id', $getQuantity->id)->update(['quantity' => $addOne]);
+                    $updateTotal = Purchase::where('id', $getQuantity->id)->update(['total' => $total]);
+                } else {
+                    $purchase = Purchase::create([
+                        'barcode' => $getProduct->product_barcode,
+                        'name' => $getProduct->product_name,
+                        'quantity' => $request->product_quantity,
+                        'price' => $request->product_price,
+                        'image' => $getProduct->product_image,
+                        'user_id' => Auth::id(),
+                        'total' => $request->product_quantity * $request->product_price,
+                    ]);
+                }
             }
             $purchases = Purchase::all();
         }

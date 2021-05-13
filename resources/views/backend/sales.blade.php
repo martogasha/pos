@@ -8,6 +8,10 @@
                                 <h4>Total Sale: <span style="color: blue">{{$totalSale}} /=</span></h4>
                                 <h4>Total Profit: <span style="color: green">{{$totalProfit}} /=</span></h4>
                             </div>
+                            <div>
+                                <h4>Total Services Sale: <span style="color: blue">{{$totalServiceSale}} /=</span></h4>
+                                <h4>Total Profit for Services: <span style="color: green">{{$totalProfitForSale}} /=</span></h4>
+                            </div>
                             <a href="#" class="btn btn-primary add-list" data-toggle="modal" data-target="#completeSale"><i class="las la-plus mr-3"></i>Complete Today's Sale</a>
                         </div>
                     </div>
@@ -54,8 +58,17 @@
                                 </td>
                                 <td>{{$sale->price}}</td>
                                 <td>{{$sale->quantity}}</td>
-                                <td>{{$sale->total}}</td>
-                                <td style="color: green">{{$sale->profit}}</td>
+                                @if($sale->total_for_services)
+                                <td>{{$sale->total_for_services}}</td>
+                                @else
+                                    <td>{{$sale->total}}</td>
+
+                                @endif
+                                @if($sale->profit_of_services)
+                                <td style="color: green">{{$sale->profit_of_services}}</td>
+                                @else
+                                    <td style="color: green">{{$sale->profit}}</td>
+                                @endif
                                 <td>{{$sale->payment_method}}</td>
                                 <td>{{$sale->user->first_name}} {{$sale->user->last_name}}</td>
                                 <td>
