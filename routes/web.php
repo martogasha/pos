@@ -32,6 +32,7 @@ Route::get('dashboard', [App\Http\Controllers\IndexController::class, 'index']);
 Route::get('products', [App\Http\Controllers\ProductController::class, 'index']);
 Route::post('storeProducts', [App\Http\Controllers\ProductController::class, 'store'])->name('storeProduct');
 Route::get('getProducts', [App\Http\Controllers\ProductController::class, 'getProduct']);
+Route::get('deleteProducts', [App\Http\Controllers\ProductController::class, 'deleteProducts']);
 Route::post('editProduct', [App\Http\Controllers\ProductController::class, 'editProduct'])->name('editProduct');
 Route::get('purchase', [App\Http\Controllers\PurchaseController::class, 'index']);
 Route::get('sales', [App\Http\Controllers\SaleController::class, 'index']);

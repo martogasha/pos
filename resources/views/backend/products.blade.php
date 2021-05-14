@@ -64,7 +64,7 @@
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge bg-success mr-2 view" data-toggle="modal" data-target="#editProduct" id="{{$product->id}}" data-placement="top" title="" data-original-title="Edit"
                                            href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                        <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
+                                        <a class="badge bg-warning mr-2 delete" id="{{$product->id}}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
                                            href="#"><i class="ri-delete-bin-line mr-0"></i></a>
                                     </div>
                                 </td>
@@ -314,6 +314,24 @@
             data:{'product':$value},
             success:function (data) {
                 $('#basic1').html(data);
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
+    $(document).on('click','.delete',function () {
+        $value = $(this).attr('id');
+        $.ajax({
+            type:"get",
+            url:"{{url('deleteProducts')}}",
+            data:{'product':$value},
+            success:function (data) {
+                alert('ok');
+                location.reload();
             },
             error:function (error) {
                 console.log(error)

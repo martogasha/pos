@@ -164,5 +164,11 @@ class ProductController extends Controller
         return redirect(url('products'))->with('success','Product Updated Successfully');
 
     }
+    public function deleteProducts(Request $request){
+        if ($request->ajax()){
+            $delete = Product::find($request->product);
+            $delete->delete();
+        }
+    }
 
 }
