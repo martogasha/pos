@@ -277,7 +277,7 @@
         $value = $(this).attr('id');
         $.ajax({
             type:"get",
-            url:"{{url('deleteProducts')}}",
+            url:"{{url('deleteExpense')}}",
             data:{'product':$value},
             success:function (data) {
                 alert('ok');

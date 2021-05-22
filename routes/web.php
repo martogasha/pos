@@ -58,4 +58,5 @@ Route::get('filterExpense', [App\Http\Controllers\SoldController::class, 'filter
 Route::get('finalProfit', [App\Http\Controllers\SoldController::class, 'finalProfit']);
 Route::get('expenses', [App\Http\Controllers\ExpensesController::class, 'expenses']);
 Route::post('addExpense', [App\Http\Controllers\ExpensesController::class, 'addExpense'])->name('addExpense');
+Route::get('deleteExpense', [App\Http\Controllers\ExpensesController::class, 'deleteExpense']);
 Route::get('belowThree', [App\Http\Controllers\ProductController::class, 'belowThree']);

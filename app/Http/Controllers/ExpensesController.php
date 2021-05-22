@@ -27,4 +27,10 @@ class ExpensesController extends Controller
         ]);
         return redirect()->back()->with('success','Expense Added Successfully');
     }
+    public function deleteExpense(Request $request){
+        if ($request->ajax()){
+            $delete = Expense::find($request->product);
+            $delete->delete();
+        }
+    }
 }
