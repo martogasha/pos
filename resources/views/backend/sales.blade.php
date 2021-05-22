@@ -12,6 +12,11 @@
                                 <h4>Total Services Sale: <span style="color: blue">{{$totalServiceSale}} /=</span></h4>
                                 <h4>Total Profit for Services: <span style="color: green">{{$totalProfitForSale}} /=</span></h4>
                             </div>
+                            <div>
+                                <h4>Today's Profit: <span style="color:blue">{{$totalProfit+$totalProfitForSale}} /=</span></h4>
+                                <h4>Today's Expense: <span style="color:maroon">{{$expense}} /=</span></h4>
+                                <h2>Today's Total Profit: <span style="color: green">{{$totalProfit+$totalProfitForSale-$expense}} /=</span></h2>
+                            </div>
                             <a href="#" class="btn btn-primary add-list" data-toggle="modal" data-target="#completeSale"><i class="las la-plus mr-3"></i>Complete Today's Sale</a>
                         </div>
                     </div>

@@ -7,14 +7,21 @@ use App\Models\Sale;
 use Faker\Provider\Image;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
     public function index(){
-        $products = Product::all();
-        return view('backend.products',[
-            'products' => $products,
-        ]);
+        if (Auth::check()){
+            $products = Product::all();
+            return view('backend.products',[
+                'products' => $products,
+            ]);
+        }
+        else{
+            return redirect(url('/'));
+        }
+
     }
     public function store(Request $request){
             $pictures = new Product();
@@ -169,6 +176,12 @@ class ProductController extends Controller
             $delete = Product::find($request->product);
             $delete->delete();
         }
+    }
+    public function belowThree(){
+        $products = Product::where('product_quantity','<',3)->get();
+        return view('backend.belowThree',[
+            'products'=>$products
+        ]);
     }
 
 }

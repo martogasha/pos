@@ -7,7 +7,9 @@
                         <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                             <div>
                                 <h4>Total Sale: <span style="color: blue" id="totalSale"></span></h4>
-                                <h4>Total Profit: <span style="color: green" id="totalProfit"></span></h4>
+                                <h4>Profit: <span style="color: green" id="totalProfit"></span></h4>
+                                <h4>Expense: <span style="color: blue" id="displayExpense"></span></h4>
+                                <h2>Total Profit: <span style="color:red" id="sumProfit"></span></h2>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -149,11 +151,41 @@
                                     data:{'date':endDate},
                                     success:function (data) {
                                         $('#headerOfSales').text(data);
+                                        $.ajax({
+                                            type:"get",
+                                            url:"{{url('filterExpense')}}",
+                                            data:{'date':endDate},
+                                            success:function (data) {
+                                                $('#displayExpense').text(data);
+                                                $.ajax({
+                                                    type:"get",
+                                                    url:"{{url('finalProfit')}}",
+                                                    data:{'date':endDate},
+                                                    success:function (data) {
+                                                        $('#sumProfit').text(data);
+
+                                                    },
+                                                    error:function (error) {
+                                                        console.log(error)
+                                                        alert('NO RECORD FOUND')
+
+                                                    }
+
+                                                });
+
+                                            },
+                                            error:function (error) {
+                                                console.log(error)
+                                                alert('NO RECORD FOUND')
+
+                                            }
+
+                                        });
 
                                     },
                                     error:function (error) {
                                         console.log(error)
-                                        alert('error')
+                                        alert('NO RECORD FOUND')
 
                                     }
 
@@ -162,7 +194,7 @@
                             },
                             error:function (error) {
                                 console.log(error)
-                                alert('error')
+                                alert('NO RECORD FOUND')
 
                             }
 
@@ -170,7 +202,7 @@
                     },
                     error:function (error) {
                         console.log(error)
-                        alert('error')
+                        alert('NO RECORD FOUND')
 
                     }
 

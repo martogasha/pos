@@ -45,6 +45,10 @@
                                             <img src="{{asset('uploads/product/'.$stock->product_image)}}" class="img-fluid rounded avatar-50 mr-3" alt="image">
                                             <div>
                                                 {{$stock->product_name}}
+                                                @if($stock->product_quantity<3)
+                                                <span class="badge badge-danger">{{$stock->product_quantity}} remianing</span>
+                                                @endif
+
                                             </div>
                                         </div>
                                     </td>
@@ -229,7 +233,25 @@
 
 </footer>
 <br>
-
+<!-- Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="error">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Backend Bundle JavaScript -->
 <script src="assets/js/backend-bundle.min.js"></script>
 
@@ -279,6 +301,7 @@
                     url:"{{url('total')}}",
                     data:{'product':$prodId},
                     success:function (data) {
+                        $('#error').html(data);
                         $('#footerTotal').html(data);
                         $("html, body").animate({
                             scrollTop: $(
@@ -316,6 +339,7 @@
                     url:"{{url('total')}}",
                     data:{'service':$service},
                     success:function (data) {
+                        $('#sellService').modal('hide');
                         $('#footerTotal').html(data);
                         $("html, body").animate({
                             scrollTop: $(
@@ -450,15 +474,20 @@
     });
     $('#completePurchase').click(function () {
         var paymentMethod = $('#paymentMethods').val();
-        var prodId = $('#productId').val();
+        var prodId = $('#purchaseId').val();
+        var name = $('#name').val();
+        var barcode = $('#barcode').val();
+        var price = $('#price').val();
+        var quantityOfPurchase = $('#quantityOfPurchase').val();
         var total = $('#total').val();
         $.ajax({
             type:"get",
             url:"{{url('sold')}}",
-            data:{'product_id':prodId,'payment_method':paymentMethod,'total':total},
+            data:{'product_id':prodId, 'barcode':barcode, 'name':name, 'price':price, 'quantityOfPurchase':quantityOfPurchase, 'payment_method':paymentMethod,'total':total},
             success:function (data) {
                 $('#tableContent').html(data);
                 $('#purchaseProducts').modal('hide');
+                alert('PURCHASE SUCCESS');
             },
             error:function (error) {
                 console.log(error)

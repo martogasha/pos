@@ -4,16 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Purchase;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PurchaseController extends Controller
+class   PurchaseController extends Controller
 {
     public function index(){
-        $stocks = Product::all();
-        return view('backend.purchase',[
-            'stocks'=>$stocks
-        ]);
+        if (Auth::check()){
+            $stocks = Product::all();
+            return view('backend.purchase',[
+                'stocks'=>$stocks
+            ]);
+        }
+        else{
+            return redirect(url('login'));
+        }
+
     }
     public function getPurchaseProduct(Request $request){
         if ($request->ajax()){
@@ -45,42 +52,50 @@ class PurchaseController extends Controller
     }
     public function purchaseTable(Request $request){
         if ($request->ajax()){
-            $output ="";
+            $checkProductQuantity = Product::find($request->product);
             if ($request->service){
+                $output = "";
                 $purchase = Purchase::create([
-                    'barcode' => 0,
-                    'name' => $request->service,
-                    'quantity' =>1,
-                    'price' => $request->priceOfService,
-                    'user_id' => Auth::id(),
-                    'total' => $request->priceOfService,
-                ]);
-            }
-            else {
-                $getProduct = Product::find($request->product);
-                $getQuantity = Purchase::where('barcode', $getProduct->product_barcode)->first();
-                if ($getQuantity) {
-                    $initialQuantity = $getQuantity->quantity;
-                    $addOne = $initialQuantity + $request->product_quantity;
-                    $total = $getQuantity->price * $addOne;
-                    $updateQuantity = Purchase::where('id', $getQuantity->id)->update(['quantity' => $addOne]);
-                    $updateTotal = Purchase::where('id', $getQuantity->id)->update(['total' => $total]);
-                } else {
-                    $purchase = Purchase::create([
-                        'barcode' => $getProduct->product_barcode,
-                        'name' => $getProduct->product_name,
-                        'quantity' => $request->product_quantity,
-                        'price' => $request->product_price,
-                        'image' => $getProduct->product_image,
+                        'barcode' => 'NA',
+                        'name' => $request->service,
+                        'quantity' =>1,
+                        'price' => $request->priceOfService,
                         'user_id' => Auth::id(),
-                        'total' => $request->product_quantity * $request->product_price,
+                        'total' => $request->priceOfService,
                     ]);
+
+
+            }
+            else{
+                if ($checkProductQuantity->product_quantity > 0) {
+                    $output = "";
+
+                    $getProduct = Product::find($request->product);
+                    $getQuantity = Purchase::where('barcode', $getProduct->product_barcode)->first();
+                    if ($getQuantity) {
+                        $initialQuantity = $getQuantity->quantity;
+                        $addOne = $initialQuantity + $request->product_quantity;
+                        $total = $getQuantity->price * $addOne;
+                        $updateQuantity = Purchase::where('id', $getQuantity->id)->update(['quantity' => $addOne]);
+                        $updateTotal = Purchase::where('id', $getQuantity->id)->update(['total' => $total]);
+                    } else {
+                        $purchase = Purchase::create([
+                            'barcode' => $getProduct->product_barcode,
+                            'name' => $getProduct->product_name,
+                            'quantity' => $request->product_quantity,
+                            'price' => $request->product_price,
+                            'image' => $getProduct->product_image,
+                            'user_id' => Auth::id(),
+                            'total' => $request->product_quantity * $request->product_price,
+                        ]);
+                    }
                 }
             }
-            $purchases = Purchase::all();
-        }
-        foreach ($purchases as $purchase) {
-            $output .= '
+
+                        $purchases = Purchase::all();
+
+                    foreach ($purchases as $purchase) {
+                        $output .= '
           <tr>
                                 <td>
                                     <div class="checkbox d-inline-block">
@@ -88,30 +103,30 @@ class PurchaseController extends Controller
                                         <label for="checkbox2" class="mb-0"></label>
                                     </div>
                                 </td>
-                                <td id="barcode">'.$purchase->barcode.'</td>
-                                <input type="hidden" value="'.$purchase->barcode.'">
+                                <td>' . $purchase->barcode . '</td>
+                                <input type="hidden" value="' . $purchase->barcode . '" id="barcode">
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="'.asset('uploads/product/'.$purchase->image).'" class="img-fluid rounded avatar-50 mr-3" alt="image">
+                                        <img src="' . asset('uploads/product/' . $purchase->image) . '" class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
-                                            '.$purchase->name.'
+                                            ' . $purchase->name . '
                                         </div>
-                                    <input type="hidden" value="'.$purchase->image.'" id="image">
-                                    <input type="hidden" value="'.$purchase->name.'">
+                                    <input type="hidden" value="' . $purchase->image . '" id="image">
+                                    <input type="hidden" value="' . $purchase->name . '" id="name">
 
                                     </div>
                                 </td>
-                                <td id="name">'.$purchase->price.'</td>
-                                <input type="hidden" value="'.$purchase->price.'" id="price">
-                                <td>'.$purchase->quantity.'</td>
-                                 <input type="hidden" value="'.$purchase->quantity.'" id="quantityOfPurchase">
-                                <td id="totalPrice">'.$purchase->total.' /=</td>
-                                <input type="hidden" value="'.$purchase->total.'" id="total">
-                                <input type="hidden" value="'.$purchase->id.'" id="purchaseId">
+                                <td>' . $purchase->price . '</td>
+                                <input type="hidden" value="' . $purchase->price . '" id="price">
+                                <td>' . $purchase->quantity . '</td>
+                                 <input type="hidden" value="' . $purchase->quantity . '" id="quantityOfPurchase">
+                                <td>' . $purchase->total . ' /=</td>
+                                <input type="hidden" value="' . $purchase->total . '" id="total">
+                                <input type="hidden" value="' . $purchase->id . '" id="purchaseId">
                                 <td>
                                     <div class="d-flex align-items-center list-action">
 
-                                        <button class="badge bg-primary mr-2 edit" id="'.$purchase->id.'" data-toggle="modal" data-target="#editPurchase">Edit</button>
+                                        <button class="badge bg-primary mr-2 edit" id="' . $purchase->id . '" data-toggle="modal" data-target="#editPurchase">Edit</button>
 
                                            <a class="badge bg-danger mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
                                            href="#" id="deleteProduct">Delete</a>
@@ -121,8 +136,13 @@ class PurchaseController extends Controller
                             </tr>
 
         ';
+                    }
+
+
         }
         return response($output);
+
+
     }
     public function total(Request $request){
         if ($request->ajax()){
@@ -300,8 +320,8 @@ class PurchaseController extends Controller
                                 <input type="hidden" value="'.$sold->price.'" id="price">
                                 <td>'.$sold->quantity.'</td>
                                  <input type="hidden" value="'.$sold->quantity.'" id="quantityOfPurchase">
-                                <td id="totalPrice">'.$sold->total.' /=</td>
-                                <input type="hidden" value="'.$sold->total.'" id="total">
+                                <td>'.$sold->total.' /=</td>
+                                    <input type="hidden" value="'.$sold->total.'" id="total">
                                 <input type="hidden" value="'.$sold->id.'" id="purchaseId">
                                 <td>
                                     <div class="d-flex align-items-center list-action">

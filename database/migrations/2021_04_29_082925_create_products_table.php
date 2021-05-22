@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->integer('quantity_of_pack')->nullable();
             $table->integer('number_of_pack')->nullable();
             $table->integer('product_quantity')->nullable();
-            $table->mediumText('product_image')->nullable();
+            $table->mediumText('product_image')->nullable(  );
             $table->string('product_desc')->nullable();
             $table->timestamps();
         });

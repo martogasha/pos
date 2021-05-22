@@ -330,7 +330,7 @@
             url:"{{url('deleteProducts')}}",
             data:{'product':$value},
             success:function (data) {
-                alert('ok');
+                alert('PRODUCT DELETED SUCCESS');
                 location.reload();
             },
             error:function (error) {

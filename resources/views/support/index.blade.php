@@ -96,9 +96,9 @@
                                 <div class="d-flex align-items-center list-action">
                                     <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
                                        href="#"><i class="ri-eye-line mr-0"></i></a>
-                                    <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                    <a class="badge bg-success mr-2 edit" data-toggle="modal" data-target="#editUser" id="{{$user->id}}" title="" data-original-title="Edit"
                                        href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                    <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
+                                    <a class="badge bg-warning mr-2 delete" id="{{$user->id}}" title="" data-original-title="Delete"
                                        href="#"><i class="ri-delete-bin-line mr-0"></i></a>
                                 </div>
                             </td>
@@ -133,6 +133,23 @@
         </div>
     </div>
 </footer>
+<div class="modal fade" id="editUser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div id="userEdit"
+
+        </div>
+
+        </div>
+    <div class="modal-footer">
+        <button type="button" id="resetPassword" class="btn btn-success">Reset Password</button>
+        <button type="button" id="submiteditUserButton" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+    </div>
+    </div>
+</div>
+
 <!-- Backend Bundle JavaScript -->
 <script src="assets/js/backend-bundle.min.js"></script>
 
@@ -160,6 +177,7 @@
             url:"{{url('addUser')}}",
             data:{'first_name':first_name,'last_name':last_name,'phone':phone,'email':email,'role':role},
             success:function (data) {
+                alert('USER ADDED SUCCESS')
                 location.reload();
             },
             error:function (error) {
@@ -169,6 +187,82 @@
             }
 
         });
+    });
+    $(document).on('click','.edit',function () {
+        $value = $(this).attr('id');
+        $.ajax({
+            type:"get",
+            url:"{{url('editUser')}}",
+            data:{'user_id':$value},
+            success:function (data) {
+                $('#userEdit').html(data);
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
+    $(document).on('click','.delete',function () {
+        $value = $(this).attr('id');
+        $.ajax({
+            type:"get",
+            url:"{{url('deleteUser')}}",
+            data:{'user_id':$value},
+            success:function (data) {
+                alert('USER REMOVED SUCCESS');
+                location.reload();
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
+
+    $('#submiteditUserButton').click(function () {
+        $value = $('#userId').val();
+        $first_name = $('#first').val();
+        $last_name = $('#last').val();
+        $email = $('#userEmail').val();
+        $phone = $('#userPhone').val();
+        $role = $('#userRole').val();
+        $.ajax({
+            type:"get",
+            url:"{{url('postEdit')}}",
+            data:{'user_id':$value, 'first_name':$first_name, 'last_name':$last_name, 'email':$email, 'phone':$phone, 'role':$role},
+            success:function (data) {
+                alert('USER EDIT SUCCESS');
+                location.reload();
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
+    $('#resetPassword').click(function () {
+            $value = $('#userId').val();;
+            $.ajax({
+                type:"get",
+                url:"{{url('resetPassword')}}",
+                data:{'user_id':$value},
+                success:function (data) {
+                    alert('PASSWORD RESET SUCCESS');
+                },
+                error:function (error) {
+                    console.log(error)
+                    alert('error')
+
+                }
+
+            });
     });
 </script>
 <!-- Mirrored from iqonic.design/themes/posdash/html/backend/page-add-product.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 09 Mar 2021 21:36:26 GMT -->

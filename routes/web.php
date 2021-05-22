@@ -26,6 +26,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //support routes
 Route::get('support', [App\Http\Controllers\SupportController::class, 'index']);
 Route::get('addUser', [App\Http\Controllers\SupportController::class, 'addUser']);
+Route::get('editUser', [App\Http\Controllers\SupportController::class, 'editUser']);
+Route::get('resetPassword', [App\Http\Controllers\SupportController::class, 'passwordReset']);
+Route::get('postEdit', [App\Http\Controllers\SupportController::class, 'postEdit']);
+Route::get('deleteUser', [App\Http\Controllers\SupportController::class, 'deleteUser']);
 //backend routes
 Route::get('/', [App\Http\Controllers\AuthController::class, 'login']);
 Route::get('dashboard', [App\Http\Controllers\IndexController::class, 'index']);
@@ -50,3 +54,8 @@ Route::get('filterRecord', [App\Http\Controllers\SoldController::class, 'filterR
 Route::get('filterPrice', [App\Http\Controllers\SoldController::class, 'filterPrice']);
 Route::get('filterProfit', [App\Http\Controllers\SoldController::class, 'filterProfit']);
 Route::get('filterHeader', [App\Http\Controllers\SoldController::class, 'filterHeader']);
+Route::get('filterExpense', [App\Http\Controllers\SoldController::class, 'filterExpense']);
+Route::get('finalProfit', [App\Http\Controllers\SoldController::class, 'finalProfit']);
+Route::get('expenses', [App\Http\Controllers\ExpensesController::class, 'expenses']);
+Route::post('addExpense', [App\Http\Controllers\ExpensesController::class, 'addExpense'])->name('addExpense');
+Route::get('belowThree', [App\Http\Controllers\ProductController::class, 'belowThree']);

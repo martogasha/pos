@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Expense;
+use App\Models\recordedExpense;
 use App\Models\Sale;
 use App\Models\Sold;
+use Facade\FlareClient\Glows\Recorder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,25 +19,55 @@ class SoldController extends Controller
         $getSales = Sale::all();
         foreach ($getSales as $getSale){
             if ($getSale->quantity>0) {
-                $sold = Sold::create([
-                    'barcode' => $getSale->barcode,
-                    'name' => $getSale->name,
-                    'price' => $getSale->price,
-                    'quantity' => $getSale->quantity,
-                    'total' => $getSale->total,
-                    'profit' => $getSale->profit,
-                    'date' => $request->date,
-                    'user_id'=> Auth::id(),
-                    'payment_method' => $getSale->payment_method,
-                    'image' => $getSale->image,
-                ]);
+                if ($getSale->barcode=='NA'){
+                    $sold = Sold::create([
+                        'barcode' => $getSale->barcode,
+                        'name' => $getSale->name,
+                        'price' => $getSale->price,
+                        'quantity' => $getSale->quantity,
+                        'total' => $getSale->total_for_services,
+                        'profit' => $getSale->profit_of_services,
+                        'date' => $request->date,
+                        'user_id'=> Auth::id(),
+                        'payment_method' => $getSale->payment_method,
+                        'image' => $getSale->image,
+                    ]);
+                }
+                else{
+                    $sold = Sold::create([
+                        'barcode' => $getSale->barcode,
+                        'name' => $getSale->name,
+                        'price' => $getSale->price,
+                        'quantity' => $getSale->quantity,
+                        'total' => $getSale->total,
+                        'profit' => $getSale->profit,
+                        'date' => $request->date,
+                        'user_id'=> Auth::id(),
+                        'payment_method' => $getSale->payment_method,
+                        'image' => $getSale->image,
+                    ]);
+                }
+
                 $updatePrice = Sale::where('barcode',$getSale->barcode)->update(['price'=>0]);
                 $updateQuantity = Sale::where('barcode',$getSale->barcode)->update(['quantity'=>0]);
                 $updateTotal = Sale::where('barcode',$getSale->barcode)->update(['total'=>0]);
+                $updateServiceTotal = Sale::where('barcode','NA')->delete();
                 $updateProfit = Sale::where('barcode',$getSale->barcode)->update(['profit'=>0]);
+                $updateServiceProfit = Sale::where('barcode','NA')->delete();
                 $updatePayment = Sale::where('barcode',$getSale->barcode)->update(['payment_method'=>null]);
             }
         }
+        $recordExpenses = Expense::all();
+        foreach ($recordExpenses as $recordExpens){
+            $record = recordedExpense::create([
+               'name'=>$recordExpens->name,
+               'desc'=>$recordExpens->desc,
+               'price'=>$recordExpens->price,
+               'user_id'=>$recordExpens->user_id,
+               'date'=>$request->date,
+            ]);
+        }
+        $expenses = Expense::truncate();
     }
     public function filterRecord(Request $request){
         if ($request->ajax()) {
@@ -105,6 +137,23 @@ class SoldController extends Controller
         }
         $getSold = Sold::where('date',$request->date)->first();
         $output = $getSold->date;
+        return response($output);
+    }
+    public function filterExpense(Request $request){
+        if ($request->ajax()){
+            $output="";
+        }
+        $getSold = recordedExpense::where('date',$request->date)->sum('price');
+        $output = $getSold;
+        return response($output);
+    }
+    public function finalProfit(Request $request){
+        if ($request->ajax()){
+            $output="";
+        }
+        $output = Sold::where('date',$request->date)->sum('profit');
+        $getExpense = recordedExpense::where('date',$request->date)->sum('price');
+        $output = $output - $getExpense;
         return response($output);
     }
 }

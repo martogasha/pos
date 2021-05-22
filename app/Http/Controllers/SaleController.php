@@ -2,52 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Expense;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Sale;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SaleController extends Controller
 {
     public function index(){
-        $sales = Sale::all();
-        $totalSale = Sale::sum('total');
-        $totalServiceSale = Sale::sum('total_for_services');
-        $totalProfit = Sale::sum('profit');
-        $totalProfitForSale = Sale::sum('profit_of_services');
-        return view('backend.sales',[
-            'sales'=>$sales,
-            'totalSale'=>$totalSale,
-            'totalServiceSale'=>$totalServiceSale,
-            'totalProfit'=>$totalProfit,
-            'totalProfitForSale'=>$totalProfitForSale,
-        ]);
+        if (Auth::check()){
+            $sales = Sale::all();
+            $totalSale = Sale::sum('total');
+            $totalServiceSale = Sale::sum('total_for_services');
+            $totalProfit = Sale::sum('profit');
+            $totalProfitForSale = Sale::sum('profit_of_services');
+            $expense = Expense::sum('price');
+            return view('backend.sales',[
+                'sales'=>$sales,
+                'totalSale'=>$totalSale,
+                'totalServiceSale'=>$totalServiceSale,
+                'totalProfit'=>$totalProfit,
+                'totalProfitForSale'=>$totalProfitForSale,
+                'expense'=>$expense,
+            ]);
+        }
+       else{
+           return redirect(url('login'));
+       }
 
     }
-    public function sold(Request $request){
+    public function sold(Request $request)
+    {
         if ($request->ajax()) {
             $output = "";
-            $tests = Purchase::all();
-            if ($request->product_id == null){
-                foreach ($tests as $test) {
-                    $createService = Sale::create([
-                        'barcode' => 0,
-                        'name' => $test->name,
-                        'price' => $test->price,
-                        'quantity' => 1,
-                        'total' => 0,
-                        'total_for_services' => $request->total,
-                        'profit_of_services' => $request->total*0.5,
-                        'profit' => 0,
-                        'payment_method' => $request->payment_method,
-                        'user_id' => Auth::id(),
-
-                    ]);
-                    $test->delete();
-                }
-            }
-            else {
+            if ($request->barcode !='NA'){
                 $gets = Purchase::all();
                 foreach ($gets as $get) {
                     $getSale = Sale::where('barcode', $get->barcode)->first();
@@ -74,15 +65,29 @@ class SaleController extends Controller
                     $updateTotal = Sale::where('barcode', $get->barcode)->update(['total' => $newTotal]);
                     $updateProfit = Sale::where('barcode', $get->barcode)->update(['profit' => $newProfit]);
                     $updatePayment = Sale::where('barcode', $get->barcode)->update(['payment_method' => $request->payment_method]);
-                    $get->delete();
-
                 }
+                $detele = Purchase::where('barcode','!=','NA')->delete();
+
+            }
+            else{
+                $sss = new Sale();
+                $sss->barcode = $request->barcode;
+                $sss->name = $request->name;
+                $sss->price = $request->price;
+                $sss->quantity = $request->quantityOfPurchase;
+                $sss->total_for_services = $request->total;
+                $sss->profit_of_services = $request->total*0.5;
+                $sss->payment_method = $request->payment_method;
+                $sss->user_id = Auth::id();
+                $sss->total =0;
+                $sss->profit =0;
+                $sss->save();
+                $detele = Purchase::where('barcode','NA')->delete();
             }
 
             $purchases = Purchase::all();
-        }
-        foreach ($purchases as $purchase) {
-            $output .= '
+            foreach ($purchases as $purchase) {
+                $output .= '
           <tr>
                                 <td>
                                     <div class="checkbox d-inline-block">
@@ -90,30 +95,30 @@ class SaleController extends Controller
                                         <label for="checkbox2" class="mb-0"></label>
                                     </div>
                                 </td>
-                                <td>'.$purchase->barcode.'</td>
-                                <input type="hidden" value="'.$purchase->barcode.'" id="barcode">
+                                <td>' . $purchase->barcode . '</td>
+                                <input type="hidden" value="' . $purchase->barcode . '" id="barcode">
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <img src="'.asset('uploads/product/'.$purchase->image).'" class="img-fluid rounded avatar-50 mr-3" alt="image">
+                                        <img src="' . asset('uploads/product/' . $purchase->image) . '" class="img-fluid rounded avatar-50 mr-3" alt="image">
                                         <div>
-                                            '.$purchase->name.'
+                                            ' . $purchase->name . '
                                         </div>
-                                    <input type="hidden" value="'.$purchase->image.'" id="image">
-                                    <input type="hidden" value="'.$purchase->name.'" id="name">
+                                    <input type="hidden" value="' . $purchase->image . '" id="image">
+                                    <input type="hidden" value="' . $purchase->name . '" id="name">
 
                                     </div>
                                 </td>
-                                <td>'.$purchase->price.'</td>
-                                <input type="hidden" value="'.$purchase->price.'" id="price">
-                                <td>'.$purchase->quantity.'</td>
-                                 <input type="hidden" value="'.$purchase->price.'" id="quantityOfPurchase">
-                                <td id="totalPrice">'.$purchase->total.' /=</td>
-                                <input type="hidden" value="'.$purchase->total.'" id="total">
-                                <input type="hidden" value="'.$purchase->id.'" id="purchaseId">
+                                <td>' . $purchase->price . '</td>
+                                <input type="hidden" value="' . $purchase->price . '" id="price">
+                                <td>' . $purchase->quantity . '</td>
+                                 <input type="hidden" value="' . $purchase->price . '" id="quantityOfPurchase">
+                                <td id="totalPrice">' . $purchase->total . ' /=</td>
+                                <input type="hidden" value="' . $purchase->total . '" id="total">
+                                <input type="hidden" value="' . $purchase->id . '" id="purchaseId">
                                 <td>
                                     <div class="d-flex align-items-center list-action">
 
-                                        <button class="badge bg-primary mr-2 edit" id="'.$purchase->id.'" data-toggle="modal" data-target="#editPurchase">Edit</button>
+                                        <button class="badge bg-primary mr-2 edit" id="' . $purchase->id . '" data-toggle="modal" data-target="#editPurchase">Edit</button>
 
                                            <a class="badge bg-danger mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
                                            href="#" id="deleteProduct">Delete</a>
@@ -123,7 +128,9 @@ class SaleController extends Controller
                             </tr>
 
         ';
+            }
+            return response($output);
         }
-        return response($output);
     }
+
 }
