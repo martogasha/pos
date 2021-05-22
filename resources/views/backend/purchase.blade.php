@@ -499,6 +499,25 @@
         });
 
     });
+    $(document).on('click','.delet',function () {
+        $purchaseId = $(this).attr('id');
+        $.ajax({
+            type:"get",
+            url:"{{url('deletePurchase')}}",
+            data:{'purchase':$purchaseId},
+            success:function (data) {
+                location.reload();
+                alert('PRODUCT REMOVED');
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
+
 </script>
 
 <!-- Mirrored from iqonic.design/themes/posdash/html/backend/page-list-sale.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 09 Mar 2021 21:36:26 GMT -->

@@ -44,6 +44,7 @@ Route::get('getPurchaseProduct', [App\Http\Controllers\PurchaseController::class
 Route::get('purchaseTable', [App\Http\Controllers\PurchaseController::class, 'purchaseTable']);
 Route::get('total', [App\Http\Controllers\PurchaseController::class, 'total']);
 Route::get('editPurchase', [App\Http\Controllers\PurchaseController::class, 'editPurchase']);
+Route::get('deletePurchase', [App\Http\Controllers\PurchaseController::class, 'deletePurchase']);
 Route::get('ePurchase', [App\Http\Controllers\PurchaseController::class, 'ePurchase']);
 Route::get('startOver', [App\Http\Controllers\PurchaseController::class, 'startOver']);
 Route::get('resume', [App\Http\Controllers\PurchaseController::class, 'resume']);

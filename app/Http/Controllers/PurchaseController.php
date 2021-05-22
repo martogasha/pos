@@ -128,7 +128,7 @@ class   PurchaseController extends Controller
 
                                         <button class="badge bg-primary mr-2 edit" id="' . $purchase->id . '" data-toggle="modal" data-target="#editPurchase">Edit</button>
 
-                                           <a class="badge bg-danger mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                           <a class="badge bg-danger mr-2 delet" id="' . $purchase->id . '" data-placement="top" title="" data-original-title="Edit"
                                            href="#" id="deleteProduct">Delete</a>
                                     </div>
                                 </td>
@@ -328,7 +328,7 @@ class   PurchaseController extends Controller
 
                                         <button class="badge bg-primary mr-2 edit" id="'.$sold->id.'" data-toggle="modal" data-target="#editPurchase">Edit</button>
 
-                                           <a class="badge bg-danger mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
+                                           <a class="badge bg-danger mr-2 delet" id="' . $sold->id . '" data-placement="top" title="" data-original-title="Edit"
                                            href="#" id="deleteProduct">Delete</a>
                                     </div>
                                 </td>
@@ -338,5 +338,11 @@ class   PurchaseController extends Controller
         ';
         }
         return response($output);
+    }
+    public function deletePurchase(Request $request){
+        if ($request->ajax()){
+            $delete = Purchase::find($request->purchase);
+            $delete->delete();
+        }
     }
 }
