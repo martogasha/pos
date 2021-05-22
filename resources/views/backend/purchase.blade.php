@@ -473,6 +473,7 @@
         });
     });
     $('#completePurchase').click(function () {
+
         var paymentMethod = $('#paymentMethods').val();
         var prodId = $('#purchaseId').val();
         var name = $('#name').val();

@@ -44,10 +44,10 @@ class SaleController extends Controller
                     $getSale = Sale::where('barcode', $get->barcode)->first();
                     $getProduct = Product::where('product_barcode', $get->barcode)->first();
                     $newQuantity = $getSale->quantity + $get->quantity;
-                    $newPrice = $get->price;
-                    $subTotal = $get->price * $get->quantity;
+                    $newPrice = $request->price;
+                    $subTotal = $request->price * $get->quantity;
                     $newTotal = $getSale->total + $subTotal;
-                    $calculateProfit = $get->price - $getProduct->buying_price;
+                    $calculateProfit = $request->price - $getProduct->buying_price;
                     $getProfit = $calculateProfit * $get->quantity;
                     $newProfit = $getSale->profit + $getProfit;
                     $productQuantity = $getProduct->product_quantity;
