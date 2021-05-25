@@ -9,7 +9,7 @@ use App\Models\Sale;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use AfricasTalking\SDK\AfricasTalking;
 class SaleController extends Controller
 {
     public function index(){
@@ -67,6 +67,18 @@ class SaleController extends Controller
                     $updatePayment = Sale::where('barcode', $get->barcode)->update(['payment_method' => $request->payment_method]);
                 }
                 $detele = Purchase::where('barcode','!=','NA')->delete();
+                $username = 'bull'; // use 'sandbox' for development in the test environment
+                $apiKey   = '647148b58869f60dcc240168a55edf3bae3057c52d7fdc343dd6f2525879562d'; // use your sandbox app API key for development in the test environment
+                $AT       = new AfricasTalking($username, $apiKey);
+                // Get one of the services
+                $sms      = $AT->sms();
+                $getProds = Sale::where('quantity','>',0)->where('user_id',Auth::id())->get();
+                // Use the service
+                $result   = $sms->send([
+                    'to'      => '0790268795',
+                    'message' => 'Thank you for reaching icons computer shop, for more info contact www.iconztech.com or 0727995279!'
+                ]);
+
 
             }
             else{
@@ -82,7 +94,17 @@ class SaleController extends Controller
                 $sss->total =0;
                 $sss->profit =0;
                 $sss->save();
+                $username = 'bull'; // use 'sandbox' for development in the test environment
+                $apiKey   = '647148b58869f60dcc240168a55edf3bae3057c52d7fdc343dd6f2525879562d'; // use your sandbox app API key for development in the test environment
+                $AT       = new AfricasTalking($username, $apiKey);
+                // Get one of the services
+                $sms      = $AT->sms();
                 $detele = Purchase::where('barcode','NA')->delete();
+                // Use the service
+                $result   = $sms->send([
+                    'to'      => '0790268795',
+                    'message' => 'Thank you for reaching icons computer shop, for more info contact www.iconztech.com or 0727995279!'
+                ]);
             }
 
             $purchases = Purchase::all();
