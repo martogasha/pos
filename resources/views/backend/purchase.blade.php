@@ -223,6 +223,10 @@
                                                     <option value="cash">Cash</option>
                                                     <option value="mpesa">Mpesa</option>
                                                 </select>
+                                                <div class="form-group">
+                                                    <label>Customer's Phone Number *</label>
+                                                    <input type="text" class="form-control" id="customerPhone">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -623,10 +627,11 @@
         var price = $('#price').val();
         var quantityOfPurchase = $('#quantityOfPurchase').val();
         var total = $('#total').val();
+        var customerPhone = $('#customerPhone').val();
         $.ajax({
             type:"get",
             url:"{{url('sold')}}",
-            data:{'product_id':prodId, 'barcode':barcode, 'name':name, 'price':price, 'quantityOfPurchase':quantityOfPurchase, 'payment_method':paymentMethod,'total':total},
+            data:{'product_id':prodId, 'barcode':barcode, 'name':name, 'price':price, 'quantityOfPurchase':quantityOfPurchase, 'payment_method':paymentMethod,'total':total,'customer_phone':customerPhone},
             success:function (data) {
                 $('#tableContent').html(data);
                 $('#purchaseProducts').modal('hide');

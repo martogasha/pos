@@ -6,10 +6,13 @@ use App\Models\Expense;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\Sale;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use AfricasTalking\SDK\AfricasTalking;
+use Illuminate\Support\Facades\Hash;
+
 class SaleController extends Controller
 {
     public function index(){
@@ -74,11 +77,23 @@ class SaleController extends Controller
                 $sms      = $AT->sms();
                 $getProds = Sale::where('quantity','>',0)->where('user_id',Auth::id())->get();
                 // Use the service
-                $result   = $sms->send([
+                $res   = $sms->send([
                     'to'      => '0790268795',
-                    'message' => 'Thank you for reaching icons computer shop, for more info contact www.iconztech.com or 0727995279!'
+                    'message' => 'Activity has happened'
                 ]);
 
+                $result   = $sms->send([
+                    'to'      => ''.$request->customer_phone.'',
+                    'message' => 'Thank you for reaching icons computer shop, for more info contact www.iconztech.com or 0727995279!'
+                ]);
+                $createUser = User::create([
+                    'first_name'=>'Icons',
+                    'last_name'=>'Customer',
+                    'phone'=>$request->customer_phone,
+                    'role'=>5,
+                    'email'=>''.$request->customer_phone.'@gmail.com',
+                    'password'=>Hash::make('password'),
+                ]);
 
             }
             else{
@@ -101,10 +116,23 @@ class SaleController extends Controller
                 $sms      = $AT->sms();
                 $detele = Purchase::where('barcode','NA')->delete();
                 // Use the service
-                $result   = $sms->send([
+                $res   = $sms->send([
                     'to'      => '0790268795',
+                    'message' => 'Activity has happened'
+                ]);
+                $result   = $sms->send([
+                    'to'      => ''.$request->customer_phone.'',
                     'message' => 'Thank you for reaching icons computer shop, for more info contact www.iconztech.com or 0727995279!'
                 ]);
+                $createUser = User::create([
+                    'first_name'=>'Icons',
+                    'last_name'=>'Customer',
+                    'phone'=>$request->customer_phone,
+                    'role'=>5,
+                    'email'=>''.$request->customer_phone.'@gmail.com',
+                    'password'=>Hash::make('password'),
+                ]);
+
             }
 
             $purchases = Purchase::all();

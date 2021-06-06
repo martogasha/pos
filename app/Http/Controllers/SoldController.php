@@ -48,13 +48,14 @@ class SoldController extends Controller
                     ]);
                 }
 
-                $updatePrice = Sale::where('barcode',$getSale->barcode)->update(['price'=>0]);
-                $updateQuantity = Sale::where('barcode',$getSale->barcode)->update(['quantity'=>0]);
-                $updateTotal = Sale::where('barcode',$getSale->barcode)->update(['total'=>0]);
-                $updateServiceTotal = Sale::where('barcode','NA')->delete();
-                $updateProfit = Sale::where('barcode',$getSale->barcode)->update(['profit'=>0]);
-                $updateServiceProfit = Sale::where('barcode','NA')->delete();
-                $updatePayment = Sale::where('barcode',$getSale->barcode)->update(['payment_method'=>null]);
+                $updatePrice = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['price'=>0]);
+                $updateQuantity = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['quantity'=>0]);
+                $updateTotal = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['total'=>0]);
+                $updateServiceTotal = Sale::where('barcode','NA')->where('user_id',Auth::id())->delete();
+                $updateProfit = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['profit'=>0]);
+                $updateServiceProfit = Sale::where('barcode','NA')->where('user_id',Auth::id())->delete();
+                $updatePayment = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['payment_method'=>null]);
+                $updateUser = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['user_id'=>null]);
             }
         }
         $recordExpenses = Expense::all();
