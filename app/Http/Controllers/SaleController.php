@@ -78,7 +78,7 @@ class SaleController extends Controller
                 $getProds = Sale::where('quantity','>',0)->where('user_id',Auth::id())->get();
                 // Use the service
                 $res   = $sms->send([
-                    'to'      => '0790268795',
+                    'to'      => '0727995279',
                     'message' => 'Activity has happened'
                 ]);
 
@@ -117,7 +117,7 @@ class SaleController extends Controller
                 $detele = Purchase::where('barcode','NA')->delete();
                 // Use the service
                 $res   = $sms->send([
-                    'to'      => '0790268795',
+                    'to'      => '0727995279',
                     'message' => 'Activity has happened'
                 ]);
                 $result   = $sms->send([
