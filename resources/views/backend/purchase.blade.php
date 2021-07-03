@@ -227,6 +227,10 @@
                                                     <label>Customer's Phone Number *</label>
                                                     <input type="text" class="form-control" id="customerPhone">
                                                 </div>
+                                                    <div class="form-group">
+                                                        <label for="dob">Date *</label>
+                                                        <input type="date" class="form-control" id="dob" name="dob" />
+                                                    </div>
                                             </div>
                                         </div>
                                     </div>
@@ -628,10 +632,11 @@
         var quantityOfPurchase = $('#quantityOfPurchase').val();
         var total = $('#total').val();
         var customerPhone = $('#customerPhone').val();
+        var dateOfBirth = $('#dob').val();
         $.ajax({
             type:"get",
             url:"{{url('sold')}}",
-            data:{'product_id':prodId, 'barcode':barcode, 'name':name, 'price':price, 'quantityOfPurchase':quantityOfPurchase, 'payment_method':paymentMethod,'total':total,'customer_phone':customerPhone},
+            data:{'product_id':prodId, 'barcode':barcode, 'name':name, 'price':price, 'quantityOfPurchase':quantityOfPurchase, 'payment_method':paymentMethod,'total':total,'customer_phone':customerPhone,'date':dateOfBirth},
             success:function (data) {
                 $('#tableContent').html(data);
                 $('#purchaseProducts').modal('hide');

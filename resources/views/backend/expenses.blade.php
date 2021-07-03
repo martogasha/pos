@@ -27,6 +27,7 @@
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Amount</th>
+                                <th>Date</th>
                                 @if(\Illuminate\Support\Facades\Auth::user()->role==0)
                                 <th>Action</th>
                                 @endif
@@ -50,6 +51,7 @@
                                 </td>
                                 <td>{{$product->desc     }}</td>
                                 <td>{{$product->price}} /=</td>
+                                <td>{{$product->date}}</td>
                                 @if(\Illuminate\Support\Facades\Auth::user()->role==0)
                                 <td>
                                     <div class="d-flex align-items-center list-action">

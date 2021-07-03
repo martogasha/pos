@@ -4,6 +4,7 @@
             <div class="row">
                     <div class="col-lg-12">
                         <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                            <div id="displayTotals">
                             <div>
                                 <h4>Total Sale: <span style="color: blue">{{$totalSale}} /=</span></h4>
                                 <h4>Total Profit: <span style="color: green">{{$totalProfit}} /=</span></h4>
@@ -17,7 +18,19 @@
                                 <h4>Today's Expense: <span style="color:maroon">{{$expense}} /=</span></h4>
                                 <h2>Today's Total Profit: <span style="color: green">{{$totalProfit+$totalProfitForSale-$expense}} /=</span></h2>
                             </div>
-                            <a href="#" class="btn btn-primary add-list" data-toggle="modal" data-target="#completeSale"><i class="las la-plus mr-3"></i>Complete Today's Sale</a>
+                            </div>
+                            <div id="showTotalSales">
+                                <h4>Total Sale: <span style="color: blue" id="totalSale"></span></h4>
+                                <h4>Profit: <span style="color: green" id="totalProfit"></span></h4>
+                                <h4>Expense: <span style="color: blue" id="displayExpense"></span></h4>
+                                <h2>Total Profit: <span style="color:red" id="sumProfit"></span></h2>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="dob">Filter Sales *</label>
+                                    <input type="date" class="form-control" id="endDate" name="dob" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 <div class="col-lg-12">
@@ -42,7 +55,7 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody class="ligth-body">
+                            <tbody class="ligth-body" id="salesTable">
                             @foreach($sales as $sale)
                                 @if($sale->quantity>0)
                             <tr>
@@ -89,7 +102,8 @@
                             </tr>
                                 @endif
                             @endforeach
-
+                            </tbody>
+                            <tbody class="ligth-body" id="filteredRecord">
                             </tbody>
                         </table>
                     </div>
@@ -171,6 +185,9 @@
 <script src="assets/js/app.js"></script>
 </body>
 <script>
+    $(document).ready(function () {
+        $('#showTotalSales').hide();
+    })
     $('#completeSaleButton').click(function () {
         var dateOfBirth = $('#dob').val();
         alert(dateOfBirth)
@@ -180,6 +197,100 @@
             data:{'date':dateOfBirth},
             success:function (data) {
                 location.reload();
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
+    $('#endDate').change(function () {
+        $('#salesTable').hide();
+        $('#displayTotals').hide();
+        $('#showTotalSales').show();
+        var endDate = $('#endDate').val();
+        $.ajax({
+            type:"get",
+            url:"{{url('filterRecord')}}",
+            data:{'date':endDate},
+            success:function (data) {
+                $('#filteredRecord').html(data);
+                $.ajax({
+                    type:"get",
+                    url:"{{url('filterPrice')}}",
+                    data:{'date':endDate},
+                    success:function (data) {
+                        $('#totalSale').text(data);
+                        $.ajax({
+                            type:"get",
+                            url:"{{url('filterProfit')}}",
+                            data:{'date':endDate},
+                            success:function (data) {
+                                $('#totalProfit').text(data);
+                                $.ajax({
+                                    type:"get",
+                                    url:"{{url('filterHeader')}}",
+                                    data:{'date':endDate},
+                                    success:function (data) {
+                                        $('#headerOfSales').text(data);
+                                        $.ajax({
+                                            type:"get",
+                                            url:"{{url('filterExpense')}}",
+                                            data:{'date':endDate},
+                                            success:function (data) {
+                                                $('#displayExpense').text(data);
+                                                $.ajax({
+                                                    type:"get",
+                                                    url:"{{url('finalProfit')}}",
+                                                    data:{'date':endDate},
+                                                    success:function (data) {
+                                                        $('#sumProfit').text(data);
+
+                                                    },
+                                                    error:function (error) {
+                                                        console.log(error)
+                                                        alert('NO RECORD FOUND')
+
+                                                    }
+
+                                                });
+
+                                            },
+                                            error:function (error) {
+                                                console.log(error)
+                                                alert('NO RECORD FOUND')
+
+                                            }
+
+                                        });
+
+                                    },
+                                    error:function (error) {
+                                        console.log(error)
+                                        alert('NO RECORD FOUND')
+
+                                    }
+
+                                });
+
+                            },
+                            error:function (error) {
+                                console.log(error)
+                                alert('NO RECORD FOUND')
+
+                            }
+
+                        });
+                    },
+                    error:function (error) {
+                        console.log(error)
+                        alert('NO RECORD FOUND')
+
+                    }
+
+                });
             },
             error:function (error) {
                 console.log(error)

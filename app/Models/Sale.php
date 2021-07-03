@@ -14,6 +14,7 @@ class Sale extends Model
         'price',
         'quantity',
         'total',
+        'date',
         'profit',
         'image',
         'total_for_services',

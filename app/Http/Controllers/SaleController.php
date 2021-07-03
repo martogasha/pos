@@ -47,10 +47,10 @@ class SaleController extends Controller
                     $getSale = Sale::where('barcode', $get->barcode)->first();
                     $getProduct = Product::where('product_barcode', $get->barcode)->first();
                     $newQuantity = $getSale->quantity + $get->quantity;
-                    $newPrice = $request->price;
-                    $subTotal = $request->price * $get->quantity;
+                    $newPrice = $getProduct->selling_price;
+                    $subTotal = $newPrice * $get->quantity;
                     $newTotal = $getSale->total + $subTotal;
-                    $calculateProfit = $request->price - $getProduct->buying_price;
+                    $calculateProfit = $newPrice - $getProduct->buying_price;
                     $getProfit = $calculateProfit * $get->quantity;
                     $newProfit = $getSale->profit + $getProfit;
                     $productQuantity = $getProduct->product_quantity;
@@ -68,6 +68,7 @@ class SaleController extends Controller
                     $updateTotal = Sale::where('barcode', $get->barcode)->update(['total' => $newTotal]);
                     $updateProfit = Sale::where('barcode', $get->barcode)->update(['profit' => $newProfit]);
                     $updatePayment = Sale::where('barcode', $get->barcode)->update(['payment_method' => $request->payment_method]);
+                    $updateDate = Sale::where('barcode', $get->barcode)->update(['date' => $request->date]);
                 }
                 $detele = Purchase::where('barcode','!=','NA')->delete();
                 $username = 'bull'; // use 'sandbox' for development in the test environment
@@ -105,6 +106,7 @@ class SaleController extends Controller
                 $sss->total_for_services = $request->total;
                 $sss->profit_of_services = $request->total*0.5;
                 $sss->payment_method = $request->payment_method;
+                $sss->date = $request->date;
                 $sss->user_id = Auth::id();
                 $sss->total =0;
                 $sss->profit =0;

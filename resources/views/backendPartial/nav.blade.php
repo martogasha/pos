@@ -98,11 +98,6 @@
                                     <i class="las la-minus"></i><span>List Sales</span>
                                 </a>
                             </li>
-                            <li class="">
-                                <a href="{{url('records')}}">
-                                    <i class="las la-minus"></i><span>List Sold Items</span>
-                                </a>
-                            </li>
                         </ul>
                     </li>
                     <li class=" ">

@@ -26,6 +26,7 @@ class CreateSalesTable extends Migration
             $table->string('payment_method')->nullable();
             $table->integer('user_id')->nullable();
             $table->mediumText('image')->nullable();
+            $table->date('date')->nullable();
             $table->timestamps();
         });
     }

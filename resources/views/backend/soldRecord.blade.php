@@ -4,8 +4,8 @@
             <div class="row">
                     <div class="col-lg-12">
                         <h3>Records for date: <span id="headerOfSales" style="color: red"></span></h3>
-                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
-                            <div>
+                        <div class="d-flex flex-wrap align-items-center justify-content-between mb-4" >
+                            <div id="showTotalSales">
                                 <h4>Total Sale: <span style="color: blue" id="totalSale"></span></h4>
                                 <h4>Profit: <span style="color: green" id="totalProfit"></span></h4>
                                 <h4>Expense: <span style="color: blue" id="displayExpense"></span></h4>

@@ -73,7 +73,7 @@ class SoldController extends Controller
     public function filterRecord(Request $request){
         if ($request->ajax()) {
             $output = "";
-            $solds = Sold::where('date',$request->date)->get();
+            $solds = Sale::where('date',$request->date)->get();
         }
             foreach ($solds as $sold) {
                 if ($sold->quantity > 0) {
@@ -122,21 +122,23 @@ class SoldController extends Controller
         if ($request->ajax()){
             $output="";
         }
-        $output = Sold::where('date',$request->date)->sum('total');
+        $output = Sale::where('date',$request->date)->sum('total');
         return response($output);
     }
     public function filterProfit(Request $request){
         if ($request->ajax()){
             $output="";
         }
-        $output = Sold::where('date',$request->date)->sum('profit');
+        $profit = Sale::where('date',$request->date)->sum('profit');
+        $profit1 = Sale::where('date',$request->date)->sum('profit_of_services');
+        $output = $profit+$profit1;
         return response($output);
     }
     public function filterHeader(Request $request){
         if ($request->ajax()){
             $output="";
         }
-        $getSold = Sold::where('date',$request->date)->first();
+        $getSold = Sale::where('date',$request->date)->first();
         $output = $getSold->date;
         return response($output);
     }
@@ -144,7 +146,7 @@ class SoldController extends Controller
         if ($request->ajax()){
             $output="";
         }
-        $getSold = recordedExpense::where('date',$request->date)->sum('price');
+        $getSold = Expense::where('date',$request->date)->sum('price');
         $output = $getSold;
         return response($output);
     }
@@ -152,8 +154,10 @@ class SoldController extends Controller
         if ($request->ajax()){
             $output="";
         }
-        $output = Sold::where('date',$request->date)->sum('profit');
-        $getExpense = recordedExpense::where('date',$request->date)->sum('price');
+        $profit = Sale::where('date',$request->date)->sum('profit');
+        $profit1 = Sale::where('date',$request->date)->sum('profit_of_services');
+        $output = $profit+$profit1;
+        $getExpense = Expense::where('date',$request->date)->sum('price');
         $output = $output - $getExpense;
         return response($output);
     }
