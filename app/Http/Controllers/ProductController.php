@@ -98,6 +98,17 @@ class ProductController extends Controller
         $sales->profit = 0;
         $sales->save();
 
+        $getImage = Product::where('product_barcode',$request->barcode)->first();
+        $sales = new Sale();
+        $sales->barcode = $request->input('barcode');
+        $sales->name = $request->input('type');
+        $sales->price = 0;
+        $sales->quantity = 0;
+        $sales->total = 0;
+        $sales->profit = 0;
+        $sales->image = $getImage->product_image;
+        $sales->save();
+
         return redirect()->back()->with('success','SERVICE ADDED SUCCESSFULLY');
     }
     public function getProduct(Request $request){
