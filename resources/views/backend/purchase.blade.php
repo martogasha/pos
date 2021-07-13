@@ -234,7 +234,7 @@
                                                 </div>
                                                     <div class="form-group">
                                                         <label for="dob">Date *</label>
-                                                        <input type="date" class="form-control" id="dob" name="dob" />
+                                                        <input type="date" class="form-control" id="dob"/>
                                                     </div>
                                             </div>
                                         </div>

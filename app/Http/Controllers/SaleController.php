@@ -158,10 +158,10 @@ class SaleController extends Controller
             $sms      = $AT->sms();
             $getProds = Finalsale::where('quantity','>',0)->where('user_id',Auth::id())->get();
 //             Use the service
-                $res   = $sms->send([
-                    'to'      => '0727995279',
-                    'message' => 'Activity has happened'
-                ]);
+                    $res   = $sms->send([
+                        'to'      => '0727995279',
+                        'message' => 'Activity has happened'
+                    ]);
 
             $result   = $sms->send([
                 'to'      => ''.$request->customer_phone.'',
