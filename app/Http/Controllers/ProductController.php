@@ -23,6 +23,29 @@ class ProductController extends Controller
         }
 
     }
+    public function getServicePrice(Request $request){
+        if ($request->ajax()){
+            $output = "";
+        }
+        $price = Product::where('id',$request->id)->first();
+        $output = '
+        <input type="text" class="form-control" value="'.$price->selling_price.'" id="priceOfService" placeholder="Price">
+
+        ';
+        return response($output);
+    }
+    public function services(){
+        if (Auth::check()){
+            $products = Product::where('buying_price',0)->get();
+            return view('backend.service',[
+                'products' => $products,
+            ]);
+        }
+        else{
+            return redirect(url('/'));
+        }
+
+    }
     public function store(Request $request){
             $pictures = new Product();
         $pictures->product_name = $request->input('product_name');
@@ -57,6 +80,25 @@ class ProductController extends Controller
 
 
         return redirect()->back()->with('success','PRODUCT ADDED SUCCESSFULLY');
+    }
+    public function storeService(Request $request){
+        $service = new Product();
+        $service->product_name = $request->input('type');
+        $service->product_barcode = $request->input('barcode');
+        $service->buying_price = 0;
+        $service->selling_price = $request->input('amount');
+        $service->save();
+        $getService = Product::where('product_barcode',$request->barcode)->first();
+        $sales = new Sale();
+        $sales->barcode = $getService->product_barcode;
+        $sales->name = $getService->product_name;
+        $sales->price = 0;
+        $sales->quantity = 0;
+        $sales->total = 0;
+        $sales->profit = 0;
+        $sales->save();
+
+        return redirect()->back()->with('success','SERVICE ADDED SUCCESSFULLY');
     }
     public function getProduct(Request $request){
         if ($request->ajax()){

@@ -44,14 +44,12 @@
                                         <label for="checkbox1" class="mb-0"></label>
                                     </div>
                                 </th>
-                                <th>Barcode</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Sub Total</th>
+                                <th>Product Name</th>
+                                <th>Total</th>
                                 <th>Profit</th>
                                 <th>Payment</th>
                                 <th>User</th>
+                                <th>Customer Phone</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -65,7 +63,6 @@
                                         <label for="checkbox2" class="mb-0"></label>
                                     </div>
                                 </td>
-                                <td>{{$sale->barcode}}</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <img src="{{asset('uploads/product/'.$sale->image)}}" class="img-fluid rounded avatar-50 mr-3" alt="image">
@@ -74,8 +71,6 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{$sale->price}}</td>
-                                <td>{{$sale->quantity}}</td>
                                 @if($sale->total_for_services)
                                 <td>{{$sale->total_for_services}}</td>
                                 @else
@@ -89,6 +84,7 @@
                                 @endif
                                 <td>{{$sale->payment_method}}</td>
                                 <td>{{$sale->user->first_name}} {{$sale->user->last_name}}</td>
+                                <td>{{$sale->phone}}</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"

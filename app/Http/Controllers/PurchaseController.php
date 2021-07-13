@@ -13,8 +13,10 @@ class   PurchaseController extends Controller
     public function index(){
         if (Auth::check()){
             $stocks = Product::all();
+            $services = Product::where('buying_price',0)->get();
             return view('backend.purchase',[
-                'stocks'=>$stocks
+                'stocks'=>$stocks,
+                'services'=>$services
             ]);
         }
         else{
@@ -53,11 +55,12 @@ class   PurchaseController extends Controller
     public function purchaseTable(Request $request){
         if ($request->ajax()){
             $checkProductQuantity = Product::find($request->product);
+            $checkProduct = Product::find($request->service);
             if ($request->service){
                 $output = "";
                 $purchase = Purchase::create([
-                        'barcode' => 'NA',
-                        'name' => $request->service,
+                        'barcode' => $checkProduct->product_barcode,
+                        'name' => $checkProduct->product_name,
                         'quantity' =>1,
                         'price' => $request->priceOfService,
                         'user_id' => Auth::id(),

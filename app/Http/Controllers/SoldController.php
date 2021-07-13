@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Expense;
+use App\Models\Finalsale;
 use App\Models\recordedExpense;
 use App\Models\Sale;
 use App\Models\Sold;
@@ -73,7 +74,7 @@ class SoldController extends Controller
     public function filterRecord(Request $request){
         if ($request->ajax()) {
             $output = "";
-            $solds = Sale::where('date',$request->date)->get();
+            $solds = Finalsale::where('date',$request->date)->get();
         }
             foreach ($solds as $sold) {
                 if ($sold->quantity > 0) {
@@ -85,7 +86,6 @@ class SoldController extends Controller
                                         <label for="checkbox2" class="mb-0"></label>
                                     </div>
                                 </td>
-                                <td>' . $sold->barcode . '</td>
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <img src="' . asset('uploads/product/' . $sold->image) . '" class="img-fluid rounded avatar-50 mr-3" alt="image">
@@ -122,15 +122,15 @@ class SoldController extends Controller
         if ($request->ajax()){
             $output="";
         }
-        $output = Sale::where('date',$request->date)->sum('total');
+        $output = Finalsale::where('date',$request->date)->sum('total');
         return response($output);
     }
     public function filterProfit(Request $request){
         if ($request->ajax()){
             $output="";
         }
-        $profit = Sale::where('date',$request->date)->sum('profit');
-        $profit1 = Sale::where('date',$request->date)->sum('profit_of_services');
+        $profit = Finalsale::where('date',$request->date)->sum('profit');
+        $profit1 = Finalsale::where('date',$request->date)->sum('profit_of_services');
         $output = $profit+$profit1;
         return response($output);
     }
@@ -138,7 +138,7 @@ class SoldController extends Controller
         if ($request->ajax()){
             $output="";
         }
-        $getSold = Sale::where('date',$request->date)->first();
+        $getSold = Finalsale::where('date',$request->date)->first();
         $output = $getSold->date;
         return response($output);
     }
@@ -154,8 +154,8 @@ class SoldController extends Controller
         if ($request->ajax()){
             $output="";
         }
-        $profit = Sale::where('date',$request->date)->sum('profit');
-        $profit1 = Sale::where('date',$request->date)->sum('profit_of_services');
+        $profit = Finalsale::where('date',$request->date)->sum('profit');
+        $profit1 = Finalsale::where('date',$request->date)->sum('profit_of_services');
         $output = $profit+$profit1;
         $getExpense = Expense::where('date',$request->date)->sum('price');
         $output = $output - $getExpense;

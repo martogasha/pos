@@ -180,11 +180,16 @@
                     <form>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Service offered</label>
-                            <input type="text" class="form-control" id="serviceOffered" aria-describedby="emailHelp" placeholder="Enter Service Offered">
-                            </div>
+                            <select name="type" class="selectpicker form-control" id="serviceOffered" data-style="py-0">
+                                @foreach($services as $service)
+                                <option value="{{$service->id}}">{{$service->product_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Price</label>
-                            <input type="text" class="form-control" id="priceOfService" placeholder="Price">
+                            <div id="service_price">
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -659,8 +664,25 @@
             url:"{{url('deletePurchase')}}",
             data:{'purchase':$purchaseId},
             success:function (data) {
-                location.reload();``
+                location.reload();
                 alert('PRODUCT REMOVED');
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
+    $('#serviceOffered').on('change',function () {
+       var service_id = $(this).val();
+        $.ajax({
+            type:"get",
+            url:"{{url('getServicePrice')}}",
+            data:{'id':service_id},
+            success:function (data) {
+                $('#service_price').html(data);
             },
             error:function (error) {
                 console.log(error)

@@ -34,8 +34,11 @@ Route::get('deleteUser', [App\Http\Controllers\SupportController::class, 'delete
 Route::get('/', [App\Http\Controllers\AuthController::class, 'login']);
 Route::get('dashboard', [App\Http\Controllers\IndexController::class, 'index']);
 Route::get('products', [App\Http\Controllers\ProductController::class, 'index']);
+Route::get('services', [App\Http\Controllers\ProductController::class, 'services']);
 Route::post('storeProducts', [App\Http\Controllers\ProductController::class, 'store'])->name('storeProduct');
+Route::post('storeService', [App\Http\Controllers\ProductController::class, 'storeService'])->name('storeService');
 Route::get('getProducts', [App\Http\Controllers\ProductController::class, 'getProduct']);
+Route::get('getServicePrice', [App\Http\Controllers\ProductController::class, 'getServicePrice']);
 Route::get('deleteProducts', [App\Http\Controllers\ProductController::class, 'deleteProducts']);
 Route::post('editProduct', [App\Http\Controllers\ProductController::class, 'editProduct'])->name('editProduct');
 Route::get('purchase', [App\Http\Controllers\PurchaseController::class, 'index']);

@@ -13,6 +13,7 @@ class Purchase extends Model
         'name',
         'price',
         'quantity',
+        'user_id',
         'total',
         'image',
         ];
