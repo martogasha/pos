@@ -162,15 +162,6 @@ class SaleController extends Controller
                     'to'      => '0727995279',
                     'message' => 'Activity has happened'
                 ]);
-            $getUserProducts = Finalsale::where('phone',$request->customer_phone)->get();
-            $one = $getUserProducts[0];
-            $oneTotal = $one->price*$one->quantity;
-            $two = $getUserProducts[1];
-            $twoTotal = $two->price*$two->quantity;
-            $three = $getUserProducts[2];
-            $four = $getUserProducts[3];
-            $five = $getUserProducts[4];
-            $six = $getUserProducts[5];
 
             $result   = $sms->send([
                 'to'      => ''.$request->customer_phone.'',
