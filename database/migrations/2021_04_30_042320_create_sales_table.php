@@ -18,7 +18,7 @@ class CreateSalesTable extends Migration
             $table->string('barcode');
             $table->string('name');
             $table->integer('price')->nullable();
-            $table->integer('quantity');
+                $table->integer('quantity');
             $table->integer('total');
             $table->integer('total_for_services')->nullable();
             $table->integer('profit');

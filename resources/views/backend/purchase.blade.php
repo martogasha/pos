@@ -638,6 +638,7 @@
         var total = $('#total').val();
         var customerPhone = $('#customerPhone').val();
         var dateOfBirth = $('#dob').val();
+        alert(dateOfBirth)
         $.ajax({
             type:"get",
             url:"{{url('sold')}}",

@@ -108,7 +108,7 @@ class SaleController extends Controller
                             'price' => $newPrice,
                             'quantity' => $newQuantity,
                             'total' => $getSale->total,
-                            'date' => $getSale->date,
+                            'date' => $request->date,
                             'phone' => $request->customer_phone,
                             'profit' => $getSale->profit,
                             'image' => $getSale->image,

@@ -94,12 +94,12 @@ class SoldController extends Controller
                                         </div>
                                     </div>
                                 </td>
-                                <td>' . $sold->price . '</td>
-                                <td>' . $sold->quantity . '</td>
-                                <td>' . $sold->total . '</td>
+                                <td>'.$sold->total.'</td>
+
                                 <td style="color: green">' . $sold->profit . '</td>
                                 <td>' . $sold->payment_method . '</td>
                                 <td>' . $sold->user->first_name . ' ' . $sold->user->last_name . '</td>
+                                <td>' . $sold->phone . '</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
