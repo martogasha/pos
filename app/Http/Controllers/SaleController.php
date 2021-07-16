@@ -118,23 +118,24 @@ class SaleController extends Controller
                             'payment_method' => $request->payment_method,
                         ]);
                     }
+                    if ($getProduct->buying_price!= 0){
+                        $updatePrice = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['price'=>0]);
+                        $updateQuantity = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['quantity'=>0]);
+                        $updateTotal = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['total'=>0]);
+                        $updateProfit = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['profit'=>0]);
+                        $updatePayment = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['payment_method'=>null]);
+                        $updateUser = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['user_id'=>null]);
+                    }
+                    else{
+                        $updatePrice = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['price'=>0]);
+                        $updateQuantity = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['quantity'=>0]);
+                        $updateTotal = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['total_for_services'=>0]);
+                        $updateProfit = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['profit_of_services'=>0]);
+                        $updatePayment = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['payment_method'=>null]);
+                        $updateUser = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['user_id'=>null]);
+                    }
                 }
-                if ($getProduct->buying_price != 0){
-                    $updatePrice = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['price'=>0]);
-                    $updateQuantity = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['quantity'=>0]);
-                    $updateTotal = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['total'=>0]);
-                    $updateProfit = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['profit'=>0]);
-                    $updatePayment = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['payment_method'=>null]);
-                    $updateUser = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['user_id'=>null]);
-                }
-                else{
-                    $updatePrice = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['price'=>0]);
-                    $updateQuantity = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['quantity'=>0]);
-                    $updateTotal = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['total_for_services'=>0]);
-                    $updateProfit = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['profit_of_services'=>0]);
-                    $updatePayment = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['payment_method'=>null]);
-                    $updateUser = Sale::where('barcode',$getSale->barcode)->where('user_id',Auth::id())->update(['user_id'=>null]);
-                }
+
 
                 $detele = Purchase::where('user_id',Auth::id())->delete();
 
