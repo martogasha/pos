@@ -64,3 +64,4 @@ Route::get('expenses', [App\Http\Controllers\ExpensesController::class, 'expense
 Route::post('addExpense', [App\Http\Controllers\ExpensesController::class, 'addExpense'])->name('addExpense');
 Route::get('deleteExpense', [App\Http\Controllers\ExpensesController::class, 'deleteExpense']);
 Route::get('belowThree', [App\Http\Controllers\ProductController::class, 'belowThree']);
+Route::get('quotation', [App\Http\Controllers\QuotationController::class, 'quotation']);
