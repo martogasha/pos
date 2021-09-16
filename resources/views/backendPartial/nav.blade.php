@@ -168,7 +168,12 @@
                         <ul id="admin" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
                             <li class="">
                                 <a href="{{url('support')}}">
-                                    <i class="las la-minus"></i><span>Admin Dashboard</span>
+                                    <i class="las la-minus"></i><span>Users</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{url('clients')}}">
+                                    <i class="las la-minus"></i><span>Customers</span>
                                 </a>
                             </li>
                         </ul>

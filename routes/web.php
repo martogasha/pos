@@ -25,6 +25,7 @@ Route::get('update', [App\Http\Controllers\AuthController::class, 'updateUserinf
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 //support routes
 Route::get('support', [App\Http\Controllers\SupportController::class, 'index']);
+Route::get('clients', [App\Http\Controllers\SupportController::class, 'clients']);
 Route::get('addUser', [App\Http\Controllers\SupportController::class, 'addUser']);
 Route::get('editUser', [App\Http\Controllers\SupportController::class, 'editUser']);
 Route::get('resetPassword', [App\Http\Controllers\SupportController::class, 'passwordReset']);

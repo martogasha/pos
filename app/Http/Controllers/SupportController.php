@@ -22,6 +22,19 @@ class SupportController extends Controller
         }
 
     }
+    public function clients(){
+        if (Auth::check()){
+            $users = User::where('role',5)->get();
+            return view('support.customers',[
+                'users'=>$users
+            ]);
+        }
+        else{
+            return redirect(url('login'));
+
+        }
+
+    }
     public function addUser(Request $request){
         if ($request->ajax()){
             $output="";
