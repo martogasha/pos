@@ -11,7 +11,7 @@ class SupportController extends Controller
 {
     public function index(){
         if (Auth::check()){
-            $users = User::all();
+            $users = User::where('role','!=',5)->get();
             return view('support.index',[
                 'users'=>$users
             ]);
