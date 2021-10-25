@@ -2,6 +2,7 @@
 <div class="content-page">
         <div class="container-fluid">
             <div class="row">
+                @if(\Illuminate\Support\Facades\Auth::check()->role==0)
                     <div class="col-lg-12">
                         <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
                             <div id="displayTotals">
@@ -33,6 +34,7 @@
                             </div>
                         </div>
                     </div>
+                @endif
                 <div class="col-lg-12">
                     <div class="table-responsive rounded mb-3">
                         <table class="data-table table mb-0 tbl-server-info">
