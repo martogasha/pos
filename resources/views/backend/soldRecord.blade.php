@@ -1,6 +1,7 @@
 @include('backendPartial.nav')
 <div class="content-page">
         <div class="container-fluid">
+            @if(\Illuminate\Support\Facades\Auth::check()->role==0)
             <div class="row">
                     <div class="col-lg-12">
                         <h3>Records for date: <span id="headerOfSales" style="color: red"></span></h3>
@@ -49,6 +50,7 @@
                     </div>
                 </div>
             </div>
+            @endif
             <!-- Page end  -->
         </div>
         <!-- Modal Edit -->
