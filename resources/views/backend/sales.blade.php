@@ -2,9 +2,9 @@
 <div class="content-page">
         <div class="container-fluid">
             <div class="row">
-                @if(\Illuminate\Support\Facades\Auth::user()->role==0)
                     <div class="col-lg-12">
                         <div class="d-flex flex-wrap align-items-center justify-content-between mb-4">
+                            @if(\Illuminate\Support\Facades\Auth::user()->role==0)
                             <div id="displayTotals">
                             <div>
                                 <h4>Total Sale: <span style="color: blue">{{$totalSale}} /=</span></h4>
@@ -26,6 +26,7 @@
                                 <h4>Expense: <span style="color: blue" id="displayExpense"></span></h4>
                                 <h2>Total Profit: <span style="color:red" id="sumProfit"></span></h2>
                             </div>
+                            @endif
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="dob">Filter Sales *</label>
@@ -34,7 +35,6 @@
                             </div>
                         </div>
                     </div>
-                @endif
                 <div class="col-lg-12">
                     <div class="table-responsive rounded mb-3">
                         <table class="data-table table mb-0 tbl-server-info">
