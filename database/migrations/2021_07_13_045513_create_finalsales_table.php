@@ -22,7 +22,7 @@ class CreateFinalsalesTable extends Migration
             $table->integer('total');
             $table->integer('total_for_services')->nullable();
             $table->integer('profit');
-            $table->integer('phone');
+            $table->integer('phone')->nullable();
             $table->integer('profit_of_services')->nullable();
             $table->string('payment_method')->nullable();
             $table->integer('user_id')->nullable();

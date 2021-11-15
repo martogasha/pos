@@ -86,7 +86,7 @@
                                 @endif
                                 <td>{{$sale->payment_method}}</td>
                                 <td>{{$sale->user->first_name}} {{$sale->user->last_name}}</td>
-                                <td>{{$sale->phone}}</td>
+                                <td>{{$sale->phoneNumber}}</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
                                         <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"

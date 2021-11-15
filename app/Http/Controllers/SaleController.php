@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use AfricasTalking\SDK\AfricasTalking;
 use Illuminate\Support\Facades\Hash;
+use function PHPUnit\Framework\isNull;
 
 class SaleController extends Controller
 {
@@ -92,7 +93,8 @@ class SaleController extends Controller
                             'quantity' => $newQuantity,
                             'total' => $newTotal,
                             'date' => $request->date,
-                            'phone' => $request->customer_phone,
+                            'phone' => '+254',
+                            'phoneNumber' => $request->customer_phone,
                             'profit' => $newProfit,
                             'image' => $getSale->image,
                             'total_for_services' => $getSale->total_for_services,
@@ -109,8 +111,8 @@ class SaleController extends Controller
                             'quantity' => $newQuantity,
                             'total' => $getSale->total,
                             'date' => $request->date,
-                            'phone' => $request->customer_phone,
-                            'profit' => $getSale->profit,
+                            'phone' => '+254',
+                            'phoneNumber' => $request->customer_phone,                            'profit' => $getSale->profit,
                             'image' => $getSale->image,
                             'total_for_services' => $newPrice*$newQuantity,
                             'profit_of_services' => $serviceProfit,
@@ -140,34 +142,36 @@ class SaleController extends Controller
                 $detele = Purchase::where('user_id',Auth::id())->delete();
 
                 $checkUser = User::where('phone',$request->customer_phone)->first();
-                if ($checkUser==null){
+                if ($checkUser==null && !is_null($request->customer_phone)){
                     $createUser = User::create([
                         'first_name'=>'Icons',
                         'last_name'=>'Customer',
-                        'phone'=>$request->customer_phone,
                         'role'=>5,
+                        'phone' => $request->customer_phone,
                         'email'=>''.$request->customer_phone.'@gmail.com',
                         'password'=>Hash::make('password'),
                     ]);
                 }
 
             }
-            $username = 'bull'; // use 'sandbox' for development in the test environment
-            $apiKey   = '647148b58869f60dcc240168a55edf3bae3057c52d7fdc343dd6f2525879562d'; // use your sandbox app API key for development in the test environment
-            $AT       = new AfricasTalking($username, $apiKey);
-            // Get one of the services
-            $sms      = $AT->sms();
-            $getProds = Finalsale::where('quantity','>',0)->where('user_id',Auth::id())->get();
+            if (!isNull($request->customer_phone)){
+                $username = 'bull'; // use 'sandbox' for development in the test environment
+                $apiKey   = '647148b58869f60dcc240168a55edf3bae3057c52d7fdc343dd6f2525879562d'; // use your sandbox app API key for development in the test environment
+                $AT       = new AfricasTalking($username, $apiKey);
+                // Get one of the services
+                $sms      = $AT->sms();
+                $getProds = Finalsale::where('quantity','>',0)->where('user_id',Auth::id())->get();
 //             Use the service
-                    $res   = $sms->send([
-                        'to'      => '0727995279',
-                        'message' => 'Activity has happened'
-                    ]);
+                $res   = $sms->send([
+                    'to'      => '0727995279',
+                    'message' => 'Activity has happened'
+                ]);
 
-            $result   = $sms->send([
-                'to'      => ''.$request->customer_phone.'',
-                'message' => 'Thank you for reaching icons computer shop. for more info contact www.iconztech.com or 0727995279!'
-            ]);
+                $result   = $sms->send([
+                    'to'      => ''.$request->customer_phone.'',
+                    'message' => 'Thank you for reaching icons computer shop. for more info contact www.iconztech.com or 0727995279!'
+                ]);
+            }
             $purchases = Purchase::all();
             foreach ($purchases as $purchase) {
                 $output .= '

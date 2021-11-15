@@ -16,6 +16,7 @@ class Finalsale extends Model
         'total',
         'date',
         'phone',
+        'phoneNumber',
         'profit',
         'image',
         'total_for_services',
