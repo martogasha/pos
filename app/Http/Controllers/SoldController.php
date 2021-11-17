@@ -103,7 +103,7 @@ class SoldController extends Controller
                                 <td>' . $sold->phone . '</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
-                             <button class="btn btn-success id" data-toggle="modal" id="{{$sale->id}}" data-target="#salesModal">Return</button>
+                             <button class="btn btn-success id" data-toggle="modal" id="'.$sold->id.'" data-target="#salesModal">Return</button>
                                         <button class="btn btn-info" data-toggle="modal" data-target="#salesModal">Edit</button>
                                         <button class="btn btn-danger" data-toggle="modal" data-target="#salesModal">Delete</button>
                                     </div>

@@ -132,7 +132,7 @@
                                 <div class="card-footer border-0">
                                     <div class="d-flex flex-wrap align-items-ceter justify-content-end">
                                         <div class="btn btn-primary mr-3" data-dismiss="modal">Cancel</div>
-                                        <button class="btn btn-outline-primary" type="submit" id="completeSaleButton">Save</button>
+                                        <button class="btn btn-outline-primary" type="submit">Save</button>
                                     </div>
                                 </div>
                             </div>
