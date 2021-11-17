@@ -40,6 +40,36 @@ class SaleController extends Controller
        }
 
     }
+    public function returnStock(Request $request){
+        $output="";
+        $finalSale = Finalsale::find($request->id);
+        $output = '
+        <input type=hidden value='.$finalSale->id.' name=saleId>
+         <div class="form-group">
+        <label>Quatity</label>
+        <input type="text" value="'.$finalSale->quantity.'" class="form-control" name="quantity">
+        </div>
+        ';
+        return response($output);
+    }
+    public function returnBack(Request $request){
+        $getSale = Finalsale::find($request->saleId);
+        $getProduct = Product::where('product_barcode', $getSale->barcode)->first();
+        $productQuantity = $getProduct->product_quantity;
+        $newProductQuantity = $productQuantity + $request->quantity;
+        if ($getProduct->number_of_pack != null) {
+            $numberOfPack = intdiv($getProduct->product_quantity, $getProduct->number_of_pack);
+        }
+        if ($getProduct->product_quantity!=null){
+            $updateProductQuantity = Product::where('product_barcode', $getSale->barcode)->update(['product_quantity' => $newProductQuantity]);
+        }
+        if ($getProduct->number_of_pack != null) {
+            $updatePacks = Product::where('product_barcode', $getSale->barcode)->update(['number_of_pack' => $numberOfPack]);
+        }
+        $getSale->delete();
+        return redirect(url('sales'))->with('success','PRODUCT RETURNED SUCCESS');
+
+    }
     public function sold(Request $request)
     {
         if ($request->ajax()) {

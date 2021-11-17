@@ -44,6 +44,8 @@ Route::get('deleteProducts', [App\Http\Controllers\ProductController::class, 'de
 Route::post('editProduct', [App\Http\Controllers\ProductController::class, 'editProduct'])->name('editProduct');
 Route::get('purchase', [App\Http\Controllers\PurchaseController::class, 'index']);
 Route::get('sales', [App\Http\Controllers\SaleController::class, 'index']);
+Route::get('returnStock', [App\Http\Controllers\SaleController::class, 'returnStock']);
+Route::post('returnBack', [App\Http\Controllers\SaleController::class, 'returnBack']);
 Route::get('getPurchaseProduct', [App\Http\Controllers\PurchaseController::class, 'getPurchaseProduct']);
 Route::get('purchaseTable', [App\Http\Controllers\PurchaseController::class, 'purchaseTable']);
 Route::get('total', [App\Http\Controllers\PurchaseController::class, 'total']);

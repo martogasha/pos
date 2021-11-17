@@ -34,6 +34,7 @@
                                 </div>
                             </div>
                         </div>
+                        @include('flash-message')
                     </div>
                 <div class="col-lg-12">
                     <div class="table-responsive rounded mb-3">
@@ -47,6 +48,7 @@
                                     </div>
                                 </th>
                                 <th>Product Name</th>
+                                <th>Quantity</th>
                                 <th>Total</th>
                                 <th>Profit</th>
                                 <th>Payment</th>
@@ -73,7 +75,8 @@
                                         </div>
                                     </div>
                                 </td>
-                                @if($sale->total_for_services)
+                                <td>{{$sale->quantity}}</td>
+                            @if($sale->total_for_services)
                                 <td>{{$sale->total_for_services}}</td>
                                 @else
                                     <td>{{$sale->total}}</td>
@@ -89,12 +92,10 @@
                                 <td>{{$sale->phoneNumber}}</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
-                                        <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                           href="#"><i class="ri-eye-line mr-0"></i></a>
-                                        <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                           href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                        <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                           href="#"><i class="ri-delete-bin-line mr-0"></i></a>
+                                        <button class="btn btn-success id" data-toggle="modal" id="{{$sale->id}}" data-target="#salesModal">Return</button>
+                                        <button class="btn btn-info" data-toggle="modal" data-target="#salesModal">Edit</button>
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#salesModal">Delete</button>
+
                                     </div>
                                 </td>
                             </tr>
@@ -110,42 +111,40 @@
             <!-- Page end  -->
         </div>
         <!-- Modal Edit -->
-        <div class="modal fade" id="completeSale" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <div class="popup text-left">
-                            <div class="media align-items-top justify-content-between">
-                                <h3 class="mb-3">Complete Sale</h3>
-                                <div class="btn-cancel p-0" data-dismiss="modal"><i class="las la-times"></i></div>
-                            </div>
-                            <div class="content edit-notes">
-                                <div class="card card-transparent card-block card-stretch event-note mb-0">
-                                    <div class="card-body px-0 bukmark">
-                                        <div class="d-flex align-items-center justify-content-between pb-2 mb-3 border-bottom">
-                                            <div class="quill-tool">
-                                            </div>
+    <div class="modal fade" id="salesModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="popup text-left">
+                        <div class="media align-items-top justify-content-between">
+                            <h3 class="mb-3">ARE YOU SURE</h3>
+                            <div class="btn-cancel p-0" data-dismiss="modal"><i class="las la-times"></i></div>
+                        </div>
+                        <form action="{{url('returnBack')}}" method="post">
+                            @csrf
+                        <div class="content edit-notes">
+                            <div class="card card-transparent card-block card-stretch event-note mb-0">
+                                <div class="card-body px-0 bukmark">
+                                        <div class="col-md-12" id="basic">
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label for="dob">Date *</label>
-                                                <input type="date" class="form-control" id="dob" name="dob" />
-                                            </div>
-                                        </div>                                     </div>
-                                    <div class="card-footer border-0">
-                                        <div class="d-flex flex-wrap align-items-ceter justify-content-end">
-                                            <div class="btn btn-primary mr-3" data-dismiss="modal">Cancel</div>
-                                            <div class="btn btn-outline-primary" id="completeSaleButton">Save</div>
-                                        </div>
+
+                                </div>
+                                <div class="card-footer border-0">
+                                    <div class="d-flex flex-wrap align-items-ceter justify-content-end">
+                                        <div class="btn btn-primary mr-3" data-dismiss="modal">Cancel</div>
+                                        <button class="btn btn-outline-primary" type="submit" id="completeSaleButton">Save</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+</div>
 </div>
 <!-- Wrapper End-->
 <footer class="iq-footer">
@@ -183,18 +182,14 @@
 <script src="assets/js/app.js"></script>
 </body>
 <script>
-    $(document).ready(function () {
-        $('#showTotalSales').hide();
-    })
-    $('#completeSaleButton').click(function () {
-        var dateOfBirth = $('#dob').val();
-        alert(dateOfBirth)
+    $(document).on('click','.id',function () {
+        $value = $(this).attr('id');
         $.ajax({
             type:"get",
-            url:"{{url('recordSale')}}",
-            data:{'date':dateOfBirth},
+            url:"{{url('returnStock')}}",
+            data:{'id':$value},
             success:function (data) {
-                location.reload();
+                $('#basic').html(data);
             },
             error:function (error) {
                 console.log(error)
@@ -204,100 +199,7 @@
 
         });
     });
-    $('#endDate').change(function () {
-        $('#salesTable').hide();
-        $('#displayTotals').hide();
-        $('#showTotalSales').show();
-        var endDate = $('#endDate').val();
-        $.ajax({
-            type:"get",
-            url:"{{url('filterRecord')}}",
-            data:{'date':endDate},
-            success:function (data) {
-                $('#filteredRecord').html(data);
-                $.ajax({
-                    type:"get",
-                    url:"{{url('filterPrice')}}",
-                    data:{'date':endDate},
-                    success:function (data) {
-                        $('#totalSale').text(data);
-                        $.ajax({
-                            type:"get",
-                            url:"{{url('filterProfit')}}",
-                            data:{'date':endDate},
-                            success:function (data) {
-                                $('#totalProfit').text(data);
-                                $.ajax({
-                                    type:"get",
-                                    url:"{{url('filterHeader')}}",
-                                    data:{'date':endDate},
-                                    success:function (data) {
-                                        $('#headerOfSales').text(data);
-                                        $.ajax({
-                                            type:"get",
-                                            url:"{{url('filterExpense')}}",
-                                            data:{'date':endDate},
-                                            success:function (data) {
-                                                $('#displayExpense').text(data);
-                                                $.ajax({
-                                                    type:"get",
-                                                    url:"{{url('finalProfit')}}",
-                                                    data:{'date':endDate},
-                                                    success:function (data) {
-                                                        $('#sumProfit').text(data);
 
-                                                    },
-                                                    error:function (error) {
-                                                        console.log(error)
-                                                        alert('NO RECORD FOUND')
-
-                                                    }
-
-                                                });
-
-                                            },
-                                            error:function (error) {
-                                                console.log(error)
-                                                alert('NO RECORD FOUND')
-
-                                            }
-
-                                        });
-
-                                    },
-                                    error:function (error) {
-                                        console.log(error)
-                                        alert('NO RECORD FOUND')
-
-                                    }
-
-                                });
-
-                            },
-                            error:function (error) {
-                                console.log(error)
-                                alert('NO RECORD FOUND')
-
-                            }
-
-                        });
-                    },
-                    error:function (error) {
-                        console.log(error)
-                        alert('NO RECORD FOUND')
-
-                    }
-
-                });
-            },
-            error:function (error) {
-                console.log(error)
-                alert('error')
-
-            }
-
-        });
-    });
 </script>
 
 <!-- Mirrored from iqonic.design/themes/posdash/html/backend/page-list-sale.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 09 Mar 2021 21:36:26 GMT -->
