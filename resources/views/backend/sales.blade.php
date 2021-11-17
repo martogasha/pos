@@ -199,7 +199,121 @@
 
         });
     });
+    $(document).ready(function () {
+        $('#showTotalSales').hide();
+    })
+    $('#completeSaleButton').click(function () {
+        var dateOfBirth = $('#dob').val();
+        alert(dateOfBirth)
+        $.ajax({
+            type:"get",
+            url:"{{url('recordSale')}}",
+            data:{'date':dateOfBirth},
+            success:function (data) {
+                location.reload();
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
 
+            }
+
+        });
+    });
+    $('#endDate').change(function () {
+        $('#salesTable').hide();
+        $('#displayTotals').hide();
+        $('#showTotalSales').show();
+        var endDate = $('#endDate').val();
+        $.ajax({
+            type:"get",
+            url:"{{url('filterRecord')}}",
+            data:{'date':endDate},
+            success:function (data) {
+                $('#filteredRecord').html(data);
+                $.ajax({
+                    type:"get",
+                    url:"{{url('filterPrice')}}",
+                    data:{'date':endDate},
+                    success:function (data) {
+                        $('#totalSale').text(data);
+                        $.ajax({
+                            type:"get",
+                            url:"{{url('filterProfit')}}",
+                            data:{'date':endDate},
+                            success:function (data) {
+                                $('#totalProfit').text(data);
+                                $.ajax({
+                                    type:"get",
+                                    url:"{{url('filterHeader')}}",
+                                    data:{'date':endDate},
+                                    success:function (data) {
+                                        $('#headerOfSales').text(data);
+                                        $.ajax({
+                                            type:"get",
+                                            url:"{{url('filterExpense')}}",
+                                            data:{'date':endDate},
+                                            success:function (data) {
+                                                $('#displayExpense').text(data);
+                                                $.ajax({
+                                                    type:"get",
+                                                    url:"{{url('finalProfit')}}",
+                                                    data:{'date':endDate},
+                                                    success:function (data) {
+                                                        $('#sumProfit').text(data);
+
+                                                    },
+                                                    error:function (error) {
+                                                        console.log(error)
+                                                        alert('NO RECORD FOUND')
+
+                                                    }
+
+                                                });
+
+                                            },
+                                            error:function (error) {
+                                                console.log(error)
+                                                alert('NO RECORD FOUND')
+
+                                            }
+
+                                        });
+
+                                    },
+                                    error:function (error) {
+                                        console.log(error)
+                                        alert('NO RECORD FOUND')
+
+                                    }
+
+                                });
+
+                            },
+                            error:function (error) {
+                                console.log(error)
+                                alert('NO RECORD FOUND')
+
+                            }
+
+                        });
+                    },
+                    error:function (error) {
+                        console.log(error)
+                        alert('NO RECORD FOUND')
+
+                    }
+
+                });
+            },
+            error:function (error) {
+                console.log(error)
+                alert('error')
+
+            }
+
+        });
+    });
 </script>
 
 <!-- Mirrored from iqonic.design/themes/posdash/html/backend/page-list-sale.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 09 Mar 2021 21:36:26 GMT -->
