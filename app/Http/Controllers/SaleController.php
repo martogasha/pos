@@ -66,7 +66,18 @@ class SaleController extends Controller
         if ($getProduct->number_of_pack != null) {
             $updatePacks = Product::where('product_barcode', $getSale->barcode)->update(['number_of_pack' => $numberOfPack]);
         }
-        $getSale->delete();
+        if ($getSale->quantity==$request->quantity){
+            $getSale->delete();
+        }
+        else{
+            $currentQuantity = $getSale->quantity - $request->quantity;
+            $selling = $getProduct->selling_price;
+            $buying = $getProduct->buying_price;
+            $profit = $selling - $buying;
+            $updateQuantity = Finalsale::where('id',$getSale->id)->update(['quantity'=>$currentQuantity]);
+            $updatetotal = Finalsale::where('id',$getSale->id)->update(['total'=>$currentQuantity*$getProduct->selling_price]);
+                $updatetProfit = Finalsale::where('id',$getSale->id)->update(['profit'=>$currentQuantity*$profit]);
+        }
         return redirect(url('sales'))->with('success','PRODUCT RETURNED SUCCESS');
 
     }
