@@ -94,6 +94,7 @@ class SoldController extends Controller
                                         </div>
                                     </div>
                                 </td>
+                                <td>'.$sold->quantity.'</td>
                                 <td>'.$sold->total.'</td>
 
                                 <td style="color: green">' . $sold->profit . '</td>
@@ -102,12 +103,9 @@ class SoldController extends Controller
                                 <td>' . $sold->phone . '</td>
                                 <td>
                                     <div class="d-flex align-items-center list-action">
-                                        <a class="badge badge-info mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="View"
-                                           href="#"><i class="ri-eye-line mr-0"></i></a>
-                                        <a class="badge bg-success mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit"
-                                           href="#"><i class="ri-pencil-line mr-0"></i></a>
-                                        <a class="badge bg-warning mr-2" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete"
-                                           href="#"><i class="ri-delete-bin-line mr-0"></i></a>
+                             <button class="btn btn-success id" data-toggle="modal" id="{{$sale->id}}" data-target="#salesModal">Return</button>
+                                        <button class="btn btn-info" data-toggle="modal" data-target="#salesModal">Edit</button>
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#salesModal">Delete</button>
                                     </div>
                                 </td>
                             </tr>
