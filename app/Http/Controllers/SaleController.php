@@ -195,7 +195,7 @@ class SaleController extends Controller
                 }
 
             }
-            if (!isNull($request->customer_phone)){
+            if ($request->customer_phone){
                 $username = 'bull'; // use 'sandbox' for development in the test environment
                 $apiKey   = '647148b58869f60dcc240168a55edf3bae3057c52d7fdc343dd6f2525879562d'; // use your sandbox app API key for development in the test environment
                 $AT       = new AfricasTalking($username, $apiKey);
@@ -209,7 +209,7 @@ class SaleController extends Controller
                 ]);
 
                 $result   = $sms->send([
-                    'to'      => ''.$request->customer_phone.'',
+                    'to'      =>'' .$request->customer_phone.'',
                     'message' => 'Thank you for reaching icons computer shop. for more info contact www.iconztech.com or 0727995279!'
                 ]);
             }
